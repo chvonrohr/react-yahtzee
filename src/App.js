@@ -1,25 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Game from './components/Game';
+import UserSelection from './components/UserSelection';
 import './App.css';
 
+import User from './helpers/User';
+
+
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    // debug
+    this.state = {
+      users: [ new User('chris'), new User("fibs")]
+    }
+    return;
+    // debug end
+
+    // this.state = {
+    //   users: null
+    // };
+    
+
+  }
+
+  setUsers(users) {
+    this.setState({ users })
+  }
+
   render() {
+    const users = this.state.users;
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="main">
+        {users ? (
+          <Game users={users} />
+        ) : (
+          <UserSelection onSubmit={(users) => this.setUsers(users) } />
+        )}      
       </div>
     );
   }

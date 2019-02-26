@@ -1,33 +1,71 @@
-.App {
+.main {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 20vmin;
+  height: auto;
+  border: 3px solid #ccc;
+}
+.avatar-mini {
+  width: 50px;
+  display: block;
+} 
+
+
+/* dices */
+.dice {
+  display: inline-block;
+  margin-right: 10px;
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+}
+.dice-locked {
+  opacity: 0.5;
+}
+button.roller {
+  background: lightblue;
+  border: 2px solid darkblue;
+  color: darkblue;
+  border-radius: 3px;
+  padding: 5px 15px;
+  margin-top: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+/* Scoreboard */
+.ui.table thead th  {
+  text-align: center;
+}
+.ui.table td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.ui.table td, 
+.ui.table th {
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.ui.table th.user-info {
+  width: 40px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.ui.table .score {
+  width: 140px;
+  text-align: left;
 }
-
-.App-link {
-  color: #61dafb;
+.ui.table td.active {
+  background: rgba(0,0,0, 0.05);
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.scoreboard {
+  margin-top: 30px;
+}
+.scoreboard .table {
+  width: auto;
+  margin: 0 auto;
 }
