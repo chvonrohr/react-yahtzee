@@ -12,7 +12,7 @@
 .avatar-mini {
   width: 50px;
   display: block;
-} 
+}
 
 
 /* dices */
@@ -38,6 +38,10 @@ button.roller {
   cursor: pointer;
 }
 
+.rolling .dice {
+
+}
+
 
 /* Scoreboard */
 .ui.table thead th  {
@@ -47,7 +51,7 @@ button.roller {
   padding-top: 3px;
   padding-bottom: 3px;
 }
-.ui.table td, 
+.ui.table td,
 .ui.table th {
   text-align: center;
 }
