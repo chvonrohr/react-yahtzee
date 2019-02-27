@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
 import { Header, Table } from 'semantic-ui-react'
 import Scores from '../helpers/Scores'
- 
+import './Scoreboard.css'
+
 class Scoreboard extends Component {
-
-    // constructor(props) {
-    //     super(props);
-    // }
-
-    // componentDidMount() {
-    // }
-
-    // diceImageUrl() {
-    //     return '/images/dice/dice'+this.props.nr+'.svg';
-    // }
 
     render() {
         const users = this.props.users;
-        const numbers = this.props.dices.map(d => d.nr);
+        const dices = this.props.dices;
+        const numbers = dices.map(d => d.nr);
+        const rolling = this.props.rolling;
 
         const rows = Object.keys(users[0].scoreboard.scores).map(sKey => {
             return users.map((u, uNr) => {
@@ -25,14 +17,20 @@ class Scoreboard extends Component {
                 const scoreFunc = Scores.find(s => s.name === sKey);
                 const activeUser = (uNr === this.props.activeUser);
 
-                let content = '';
+                let content = '-';
+                let className = activeUser ? 'active' : '';
 
+                // show score or "-" for non-active users or in rolling-mode
                 if (!activeUser ||
-                    (scores[sKey] && scores[sKey] >=0)) {
-                    content = scores[sKey] || '-';
-                
+                    rolling ||
+                    isInteger(scores[sKey])
+                ) {
+                  content = isInteger(scores[sKey]) ? scores[sKey] : '-';
+
+                // show score-selection button and points otherwise
                 } else {
                     const possibleScore = scoreFunc.score(numbers);
+                    className = 'active-selection';
                     content = (
                         <button onClick={() => this.props.setPoints(sKey)}>
                             {possibleScore}
@@ -43,7 +41,7 @@ class Scoreboard extends Component {
                 return {
                     key: uNr+"/"+sKey,
                     scoreName: scoreFunc.title,
-                    class: activeUser?'active':'',
+                    class: className,
                     content
                 };
             });
@@ -51,7 +49,7 @@ class Scoreboard extends Component {
 
         // partly sum
         rows.splice(6,0, users.map(u => {
-            return { key: u.name+"/partly", scoreName: 'Summe', content: (
+            return { key: u.name+"/partly", scoreName: 'Summe', class: 'total', content: (
                 <span>{u.scoreboard.partlyScore}</span>
             )}
         }));
@@ -65,43 +63,53 @@ class Scoreboard extends Component {
 
         // total
         rows.push(users.map(u => {
-            return { key: u.name+"/totalScore", scoreName: 'Total', content: (
-                <span>{u.scoreboard.totalScore}</span>
-            )}
+          return {
+            key: u.name+"/totalScore",
+            scoreName: 'Total',
+            class: 'total',
+            content: (
+              <span>{u.scoreboard.totalScore}</span>
+            )};
         }));
 
         return (
-            <Table basic='very' celled>
-                <Table.Header>
+            <Table basic='very' striped celled>
+              <Table.Header>
 
-                    <Table.Row>
-                        <Table.HeaderCell className="score"></Table.HeaderCell>
-                        {users.map(user =>
-                            <Table.HeaderCell key={user.name} className="user-info">
-                                <img src={user.avatar} className="avatar avatar-mini" alt="" />
-                                <Header.Content>
-                                    {user.name}
-                                </Header.Content>
-                            </Table.HeaderCell>
-                        )}
-                    </Table.Row>
-                </Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell className="score"></Table.HeaderCell>
+                  {users.map(user =>
+                    <Table.HeaderCell key={user.name} className="user-info">
 
-                <Table.Body>
-                    {rows.map(scoreRow =>
-                        <Table.Row key={scoreRow[0].scoreName}>
-                            <Table.Cell className="score">{scoreRow[0].scoreName}</Table.Cell>
-                            {scoreRow.map(userCell =>
-                                <Table.Cell key={userCell.key} className={userCell.class}>
-                                    {userCell.content}
-                                </Table.Cell>
-                            )}
-                        </Table.Row>
+                      <Header.Content>
+                        {user.avatar}
+                        {user.name}
+                        {user.isBot ? '(Bot)' : ''}
+                      </Header.Content>
+                    </Table.HeaderCell>
+                  )}
+                </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                {rows.map(scoreRow =>
+                  <Table.Row key={scoreRow[0].scoreName}>
+                    <Table.Cell className="score">{scoreRow[0].scoreName}</Table.Cell>
+                    {scoreRow.map(userCell =>
+                      <Table.Cell key={userCell.key} className={userCell.class}>
+                        {userCell.content}
+                      </Table.Cell>
                     )}
-                </Table.Body>
+                  </Table.Row>
+                )}
+              </Table.Body>
             </Table>
         )
     }
 }
- 
+
 export default Scoreboard;
+
+function isInteger(nr) {
+  return nr === parseInt(nr, 10)
+}

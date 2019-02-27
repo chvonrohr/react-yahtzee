@@ -1,1 +1,90 @@
-<?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="165 164 56 90" width="56" height="90"><g><g><path d="M 170.6 198 L 215.4 198 C 218.491 198 221 200.509 221 203.6 L 221 248.4 C 221 251.491 218.491 254 215.4 254 L 170.6 254 C 167.509 254 165 251.491 165 248.4 L 165 203.6 C 165 200.509 167.509 198 170.6 198 Z" style="stroke:none;fill:#EBEBEB;stroke-miterlimit:10;"/><g><g><circle vector-effect="non-scaling-stroke" cx="192.75000000000006" cy="226.00000000000023" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="182.75000000000017" cy="212.99999999999994" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="203.25000000000017" cy="239.00000000000028" r="5" fill="rgb(0,0,0)"/></g></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Gravit.io -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="isolation:isolate"
+   viewBox="165 164 56 56"
+   width="56"
+   height="56"
+   version="1.1"
+   id="svg3876"
+   sodipodi:docname="dice3.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata3882">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3880" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3878"
+     showgrid="false"
+     inkscape:zoom="2.6222222"
+     inkscape:cx="28"
+     inkscape:cy="45"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3876" />
+  <g
+     id="g3874"
+     transform="translate(0,-34)">
+    <g
+       id="g3872">
+      <path
+         d="m 170.6,198 h 44.8 c 3.091,0 5.6,2.509 5.6,5.6 v 44.8 c 0,3.091 -2.509,5.6 -5.6,5.6 h -44.8 c -3.091,0 -5.6,-2.509 -5.6,-5.6 v -44.8 c 0,-3.091 2.509,-5.6 5.6,-5.6 z"
+         style="fill:#ebebeb;stroke:none;stroke-miterlimit:10"
+         id="path3860"
+         inkscape:connector-curvature="0" />
+      <g
+         id="g3870">
+        <g
+           id="g3868">
+          <circle
+             cx="192.75"
+             cy="226"
+             r="5"
+             id="circle3862"
+             style="vector-effect:non-scaling-stroke;fill:#000000" />
+          <circle
+             cx="182.75"
+             cy="213"
+             r="5"
+             id="circle3864"
+             style="vector-effect:non-scaling-stroke;fill:#000000" />
+          <circle
+             cx="203.25"
+             cy="239"
+             r="5"
+             id="circle3866"
+             style="vector-effect:non-scaling-stroke;fill:#000000" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

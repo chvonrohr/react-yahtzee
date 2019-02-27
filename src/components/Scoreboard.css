@@ -1,0 +1,45 @@
+.ui.table thead th  {
+  text-align: center;
+}
+.ui.table td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.ui.table td,
+.ui.table th {
+  text-align: center;
+}
+
+.ui.table th.user-info {
+  width: 40px;
+}
+.ui.table .score {
+  width: 140px;
+  text-align: left;
+}
+.ui.table td.active {
+  background: rgba(0,0,0, 0.05);
+}
+.ui.table td.total {
+  font-weight: bold;
+}
+.ui.table td.active-selection {
+  padding: 0;
+}
+.ui.table td.active-selection button {
+  width: 100%;
+  height: 25px;
+  background: lightgreen;
+  border: none;
+  cursor: pointer;
+}
+.ui.table td.active-selection button:hover {
+  background: greenyellow;
+}
+.scoreboard {
+  margin-top: 30px;
+}
+.scoreboard .table {
+  width: auto;
+  margin: 0 auto;
+}

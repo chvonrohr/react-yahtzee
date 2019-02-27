@@ -3,7 +3,7 @@ import Game from './components/Game';
 import UserSelection from './components/UserSelection';
 import './App.css';
 
-import User from './helpers/User';
+import User from './helpers/User'; // for debug
 
 
 class App extends Component {
@@ -12,16 +12,16 @@ class App extends Component {
     super(props);
 
     // debug
-    this.state = {
-      users: [ new User('chris'), new User("fibs")]
-    }
-    return;
+    // this.state = {
+    //   users: [ new User('chris'), new User("fibs")]
+    // }
+    // return;
     // debug end
 
-    // this.state = {
-    //   users: null
-    // };
-    
+    this.state = {
+      users: null
+    };
+
 
   }
 
@@ -38,7 +38,7 @@ class App extends Component {
           <Game users={users} />
         ) : (
           <UserSelection onSubmit={(users) => this.setUsers(users) } />
-        )}      
+        )}
       </div>
     );
   }

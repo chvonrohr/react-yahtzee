@@ -1,1 +1,105 @@
-<?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="95 164 56 90" width="56" height="90"><g><g><path d="M 100.6 198 L 145.4 198 C 148.491 198 151 200.509 151 203.6 L 151 248.4 C 151 251.491 148.491 254 145.4 254 L 100.6 254 C 97.509 254 95 251.491 95 248.4 L 95 203.6 C 95 200.509 97.509 198 100.6 198 Z" style="stroke:none;fill:#EBEBEB;stroke-miterlimit:10;"/><g><g><g><circle vector-effect="non-scaling-stroke" cx="115.75000000000009" cy="217.5000000000001" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="130.25000000000009" cy="234.5000000000001" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="115.75000000000009" cy="217.5000000000001" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="130.25000000000009" cy="234.5000000000001" r="5" fill="rgb(0,0,0)"/><circle vector-effect="non-scaling-stroke" cx="130.25000000000009" cy="234.5000000000001" r="5" fill="rgb(0,0,0)"/></g></g></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Gravit.io -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="isolation:isolate"
+   viewBox="95 164 56 56"
+   width="56"
+   height="56"
+   version="1.1"
+   id="svg3852"
+   sodipodi:docname="dice2.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata3858">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3856" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3854"
+     showgrid="false"
+     inkscape:zoom="2.6222222"
+     inkscape:cx="28"
+     inkscape:cy="45"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3852" />
+  <g
+     id="g3850"
+     transform="translate(0,-34)">
+    <g
+       id="g3848">
+      <path
+         d="m 100.6,198 h 44.8 c 3.091,0 5.6,2.509 5.6,5.6 v 44.8 c 0,3.091 -2.509,5.6 -5.6,5.6 h -44.8 c -3.091,0 -5.6,-2.509 -5.6,-5.6 v -44.8 c 0,-3.091 2.509,-5.6 5.6,-5.6 z"
+         style="fill:#ebebeb;stroke:none;stroke-miterlimit:10"
+         id="path3830"
+         inkscape:connector-curvature="0" />
+      <g
+         id="g3846">
+        <g
+           id="g3844">
+          <g
+             id="g3842">
+            <circle
+               cx="115.75"
+               cy="217.5"
+               r="5"
+               id="circle3832"
+               style="vector-effect:non-scaling-stroke;fill:#000000" />
+            <circle
+               cx="130.25"
+               cy="234.5"
+               r="5"
+               id="circle3834"
+               style="vector-effect:non-scaling-stroke;fill:#000000" />
+            <circle
+               cx="115.75"
+               cy="217.5"
+               r="5"
+               id="circle3836"
+               style="vector-effect:non-scaling-stroke;fill:#000000" />
+            <circle
+               cx="130.25"
+               cy="234.5"
+               r="5"
+               id="circle3838"
+               style="vector-effect:non-scaling-stroke;fill:#000000" />
+            <circle
+               cx="130.25"
+               cy="234.5"
+               r="5"
+               id="circle3840"
+               style="vector-effect:non-scaling-stroke;fill:#000000" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

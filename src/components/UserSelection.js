@@ -3,7 +3,7 @@ import User from '../helpers/User';
 
 
 class UserSelection extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,28 +25,46 @@ class UserSelection extends Component {
     handleUserInput(event) {
         this.setState({value: event.target.value});
         const target = event.target;
+        const isCheckbox = target.type === 'checkbox';
+        const value = isCheckbox ? target.checked : target.value;
         const user = this.state.users[ target.name ];
-        user.name = target.value;
+
+        if (isCheckbox) {
+          user.isBot = value;
+        } else {
+          user.name = value;
+        }
     }
-    
+
     render() {
         const users = this.state.users.slice(0);
         return (
             <div>
+                <h1>Gib deine Spieler-Namen ein:</h1>
                 {users.map((user, nr) =>
                     <div key={nr}>
-                        User {nr+1}: 
-                        <input 
-                            type={user.name}
-                            name={nr}
-                            onKeyDown={(e) => this.addUser(e)}
-                            onChange={this.handleUserInput}
-                            required
+                        Spieler {nr+1}:
+                        <input
+                          type="text"
+                          value={user.name}
+                          name={nr}
+                          onKeyDown={(e) => this.addUser(e)}
+                          onChange={this.handleUserInput}
+                          required
                         />
+
+                        <label>
+                          <input
+                            type="checkbox"
+                            value={user.isBot}
+                            name={nr}
+                            onChange={this.handleUserInput}
+                          /> Bot
+                        </label>
                     </div>
                 )}
-                <button onClick={() => this.addUser() }>Another User</button>
-                <button onClick={() => this.props.onSubmit(this.state.users) }>Start</button>
+                <button className="btn" onClick={() => this.addUser() }>Another User</button>
+                <button className="btn btn-primary" onClick={() => this.props.onSubmit(this.state.users) }>Start</button>
             </div>
         )
     }

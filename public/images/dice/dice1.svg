@@ -1,1 +1,69 @@
-<?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="25 187 56 67" width="56" height="67"><g><path d=" M 30.6 198 L 75.4 198 C 78.491 198 81 200.509 81 203.6 L 81 248.4 C 81 251.491 78.491 254 75.4 254 L 30.6 254 C 27.509 254 25 251.491 25 248.4 L 25 203.6 C 25 200.509 27.509 198 30.6 198 Z " fill="rgb(235,235,235)"/><circle vector-effect="non-scaling-stroke" cx="53" cy="226.00000000000009" r="5" fill="rgb(0,0,0)"/></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Gravit.io -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="isolation:isolate"
+   viewBox="25 187 56 56"
+   width="56"
+   height="56"
+   version="1.1"
+   id="svg3822"
+   sodipodi:docname="dice1.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata3828">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3826" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3824"
+     showgrid="false"
+     inkscape:zoom="3.5223881"
+     inkscape:cx="28"
+     inkscape:cy="33.5"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3822" />
+  <g
+     id="g3820"
+     transform="translate(0,-11)">
+    <path
+       d="m 30.6,198 h 44.8 c 3.091,0 5.6,2.509 5.6,5.6 v 44.8 c 0,3.091 -2.509,5.6 -5.6,5.6 H 30.6 c -3.091,0 -5.6,-2.509 -5.6,-5.6 v -44.8 c 0,-3.091 2.509,-5.6 5.6,-5.6 z"
+       id="path3816"
+       inkscape:connector-curvature="0"
+       style="fill:#ebebeb" />
+    <circle
+       cx="53"
+       cy="226"
+       r="5"
+       id="circle3818"
+       style="vector-effect:non-scaling-stroke;fill:#000000" />
+  </g>
+</svg>

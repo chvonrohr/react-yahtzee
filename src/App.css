@@ -1,6 +1,7 @@
 .main {
   text-align: center;
   padding-top: 30px;
+  padding-bottom: 50px;
 }
 
 .avatar {
@@ -15,7 +16,47 @@
 }
 
 
-/* dices */
+/* INPUT / BUTTONS */
+.btn {
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+
+  background: #ccc;
+  color: #333;
+}
+.btn-primary {
+  background: #116cd6;
+  color: #fff;
+}
+.btn small {
+  font-weight: normal;
+}
+.btn + .btn {
+  margin-left: 15px;
+}
+
+input[type=text] {
+  height: 30px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  box-shadow: none;
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
+
+/* DICES */
+.dices-panel {
+  height: 100px;
+}
 .dice {
   display: inline-block;
   margin-right: 10px;
@@ -27,49 +68,18 @@
 .dice-locked {
   opacity: 0.5;
 }
-button.roller {
-  background: lightblue;
-  border: 2px solid darkblue;
-  color: darkblue;
-  border-radius: 3px;
-  padding: 5px 15px;
-  margin-top: 10px;
-  font-size: 20px;
-  cursor: pointer;
+.dices-panel.rolling .dice:not(.dice-locked) {
+  animation: shake 1s infinite;
 }
+.dices-panel.rolling .dice:nth-of-type(1) { animation-delay: -500ms; }
+.dices-panel.rolling .dice:nth-of-type(2) { animation-delay: -900ms; }
+.dices-panel.rolling .dice:nth-of-type(3) { animation-delay: -700ms; }
+.dices-panel.rolling .dice:nth-of-type(4) { animation-delay: -350ms; }
+.dices-panel.rolling .dice:nth-of-type(5) { animation-delay: -800ms; }
 
-.rolling .dice {
-
-}
-
-
-/* Scoreboard */
-.ui.table thead th  {
-  text-align: center;
-}
-.ui.table td {
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-.ui.table td,
-.ui.table th {
-  text-align: center;
-}
-
-.ui.table th.user-info {
-  width: 40px;
-}
-.ui.table .score {
-  width: 140px;
-  text-align: left;
-}
-.ui.table td.active {
-  background: rgba(0,0,0, 0.05);
-}
-.scoreboard {
-  margin-top: 30px;
-}
-.scoreboard .table {
-  width: auto;
-  margin: 0 auto;
+@keyframes shake {
+  10%, 90% { transform: rotate(30deg); }
+  20%, 80% { transform: rotate(135deg); }
+  30%, 50%, 70% { transform: rotate(125deg); }
+  40%, 60% { transform: roatate(45deg); }
 }
