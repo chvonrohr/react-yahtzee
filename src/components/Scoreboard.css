@@ -12,6 +12,7 @@
 
 .ui.table th.user-info {
   width: 40px;
+  vertical-align: top;
 }
 .ui.table .score {
   width: 140px;

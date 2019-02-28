@@ -83,7 +83,7 @@ class Scoreboard extends Component {
 
                       <Header.Content>
                         {user.avatar}
-                        {user.name}
+                        {user.name}<br/>
                         {user.isBot ? '(Bot)' : ''}
                       </Header.Content>
                     </Table.HeaderCell>

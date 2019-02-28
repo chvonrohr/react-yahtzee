@@ -13,7 +13,7 @@ class App extends Component {
 
     // debug
     // this.state = {
-    //   users: [ new User('chris'), new User("fibs")]
+    //   users: [ new User('chris', true), new User("fibs", true)]
     // }
     // return;
     // debug end

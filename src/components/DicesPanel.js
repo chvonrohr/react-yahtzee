@@ -48,7 +48,7 @@ class DicesPanel extends Component {
             würfeln <small>({3 - remainThrows} / 3)</small>
           </button>
         ) : (
-          <h3>Choose your position</h3>
+          <h3>Wo willst du deine Punkte schreiben?</h3>
         )}
 
       </div>

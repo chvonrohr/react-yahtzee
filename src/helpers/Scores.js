@@ -1,17 +1,18 @@
 
 /**
  * Finds a number with a given occurance (min/max)
- * 
+ *
  * @param {array} numbers Array with numer
- * @param {int} min Min nr. of occurrence 
- * @param {int} max Max nr. of occurrence 
+ * @param {int} min Min nr. of occurrence
+ * @param {int} max Max nr. of occurrence
  * @return {object} object first number and occurance that matches min-max occurance boundary e.g. { nr: 3, n: 4 }
  */
 function findNrTimes(numbers, min, max = 5) {
-    const group = numbers.reduce((a,c) => { 
-        a[c] = a[c] ? a[c]+1 : 1; 
+    const group = numbers.reduce((a,c) => {
+        a[c] = a[c] ? a[c]+1 : 1;
         return a;
     }, {});
+
     for (let nr in group) {
         if (group[nr] >= min && group[nr] <= max) {
             return { nr, n: group[nr] };
@@ -23,7 +24,7 @@ function findNrTimes(numbers, min, max = 5) {
 
 /**
  * sum up all numbers
- * 
+ *
  * @param {array} numbers Array of numbers
  * @return {int}
  */
@@ -33,7 +34,7 @@ function numbersSum(numbers) {
 
 /**
  * find max sequence of numbers
- * 
+ *
  * @param {array} numbers
  * @return {int}
  */
@@ -53,50 +54,68 @@ export function maxStraight(numbers) {
     return max;
 }
 
+function chanceForNumber(number, numbers, remainingThrows) {
+  const count = numbers.filter(nr => number===nr).length;
+  let chance = (count / 5);
+  // chance = chance===1 ? chance : (chance * (remainingThrows+1) / 3);
+  chance = chance>0 ? 1 : (5*remainingThrows/3)
+  return chance;
+}
+
+// function chanceForSame(numbers, remainingThrows) {
+//   const
+// }
+
 
 export default [
 
     // ones - sixes
     {
         name: 'ones',
-        title: 'Ones',
-        score: numbers => numbers.reduce((a,c) => a+(c===1 ? c : 0), 0)
+        title: 'Einer',
+        score: numbers => numbers.reduce((a,c) => a+(c===1 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(1, numbers, remainingThrows)
     },
     {
         name: 'twos',
-        title: 'Twos',
-        score: numbers => numbers.reduce((a,c) => a+(c===2 ? c : 0), 0)
+        title: 'Zweier',
+        score: numbers => numbers.reduce((a,c) => a+(c===2 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(2, numbers, remainingThrows)
     },
     {
         name: 'threes',
-        title: 'Threes',
-        score: numbers => numbers.reduce((a,c) => a+(c===3 ? c : 0), 0)
+        title: 'Dreier',
+        score: numbers => numbers.reduce((a,c) => a+(c===3 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(3, numbers, remainingThrows)
     },
     {
         name: 'fours',
-        title: 'Fours',
-        score: numbers => numbers.reduce((a,c) => a+(c===4 ? c : 0), 0)
+        title: 'Vierer',
+        score: numbers => numbers.reduce((a,c) => a+(c===4 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(4, numbers, remainingThrows)
     },
     {
         name: 'fives',
-        title: 'Fives',
-        score: numbers => numbers.reduce((a,c) => a+(c===5 ? c : 0), 0)
+        title: 'Fünfer',
+        score: numbers => numbers.reduce((a,c) => a+(c===5 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(5, numbers, remainingThrows)
     },
     {
         name: 'sixes',
-        title: 'Sixes',
-        score: numbers => numbers.reduce((a,c) => a+(c===6 ? c : 0), 0)
+        title: 'Sechser',
+        score: numbers => numbers.reduce((a,c) => a+(c===6 ? c : 0), 0),
+        chance: (numbers, remainingThrows) => chanceForNumber(6, numbers, remainingThrows)
     },
-    
+
     // same of a kind: 3/4 of a kind, full house, yahtzee
     {
         name: 'threeofakind',
-        title: 'Three of a kind',
+        title: 'Drei Gleiche',
         score: numbers => findNrTimes(numbers, 3) ? numbersSum(numbers) : 0
     },
     {
         name: 'fourofakind',
-        title: 'Four of a kind',
+        title: 'Vier Gleiche',
         score: numbers => findNrTimes(numbers, 4) ? numbersSum(numbers) : 0
     },
     {
@@ -117,12 +136,12 @@ export default [
     // Straights
     {
         name: 'smallstraight',
-        title: 'Small straight',
+        title: 'Kleine Strasse',
         score: numbers => (maxStraight(numbers)>=4) ? 30 : 0
     },
     {
         name: 'largestraight',
-        title: 'Large straight',
+        title: 'Grosse Strasse',
         score: numbers => (maxStraight(numbers)>=5) ? 40 : 0
     },
 

@@ -14,9 +14,11 @@ class Game extends Component {
       dices: getRandomDices(),
       rolling: false, // dices are rolling (animated)
       remainThrows: 3,
+      finito: false
     };
 
-    this.ANIMATION_DURATION = 1500;
+    this.ANIMATION_DURATION = 100; //1500;
+    this.BOT_WAIT_DURATION = 100; //1000;
   }
 
   componentDidMount() {
@@ -24,9 +26,10 @@ class Game extends Component {
   }
 
   rollDices() {
-    console.log(this.state.remainThrows, 'remain');
+
     // remain throws, if 0, locked!
     if (this.state.remainThrows <= 0) return;
+    if (this.state.rolling) return;
 
     //this.setState((state /*, props*/ ) => ({
     this.setState({
@@ -37,8 +40,42 @@ class Game extends Component {
 
     // stop rolling animation
     setTimeout(() => {
-      this.setState({ rolling: false });
+      this.setState({ rolling: false }, this.botDecision);
     }, this.ANIMATION_DURATION);
+  }
+
+  // automatic bot decision if user is bot
+  botDecision() {
+    const activeUser = this.props.users[ this.state.activeUser ];
+    if (!activeUser.isBot) return;
+
+    let decision = activeUser.getBotDecision(this.state.remainThrows, this.state.dices);
+    console.log(decision, 'bot decision for '+activeUser.name);
+
+    setTimeout(() => {
+      switch(decision.cmd) {
+
+        case 'SELECT':
+          this.setPoints(decision.option);
+          break;
+
+        case 'KEEP':
+          const keep = decision.option;
+          this.state.dices.forEach((d,i) => {
+            if (d.isLocked && !keep.includes(i)) {
+              this.toggleDiceLock(i);
+            } else if (!d.isLocked && keep.includes(i)) {
+              this.toggleDiceLock(i);
+            }
+          });
+          this.rollDices();
+          break;
+        default:
+          break;
+      }
+    }, this.BOT_WAIT_DURATION);
+
+
   }
 
   toggleDiceLock(id) {
@@ -58,7 +95,13 @@ class Game extends Component {
     const numbers = this.state.dices.map(d => d.nr);
 
     activeUser.scoreboard.scores[scoreKey] = scoreFunc.score(numbers);
-    console.log(nextUser, 'next user');
+
+    // check finished
+    const lastUser = users[ users.length-1 ];
+    if (!Object.values(lastUser.scoreboard.scores).some(s => s===null)) {
+      this.setState({ finito: true });
+      return;
+    }
 
     // next user & reset dices
     this.setState({

@@ -1,13 +1,14 @@
 import React from 'react'
-import UserScoreboard from './UserScoreboard';
+import UserScoreboard from './UserScoreboard'
 import Avatar from 'avataaars'
+import Scores from './Scores'
 
 class User {
 
-    constructor(userName) {
+    constructor(userName, isBot) {
         this.scoreboard = new UserScoreboard();
         this.name = userName || '';
-        this.isBot = false;
+        this.isBot = isBot || false;
 
         const colors = ['Auburn','Black','Blonde','BlondeGolden','Brown','BrownDark','PastelPink','Platinum','Red','SilverGray'];
         this.avatarHair = getRandom(['NoHair','Eyepatch','Hat','Hijab','Turban','LongHairBigHair','LongHairBob','LongHairBun','LongHairCurly','LongHairCurvy','LongHairFrida','ShortHairDreads01','ShortHairFrizzle']);
@@ -25,14 +26,6 @@ class User {
         // eyeType='WinkWacky'
         // eyebrowType='RaisedExcitedNatural'
     }
-
-    // set name(name) {
-    //     this.name = name;
-    // }
-
-    // get name() {
-    //     return this.name;
-    // }
 
     get avatar() {
         //return 'https://api.adorable.io/avatars/285/' + this.name + '.png';
@@ -55,6 +48,15 @@ class User {
     }
 }
 
+
+function getBestSame(numbers) {
+  const group = numbers.reduce((a,c) => {
+    a[c] = a[c] ? a[c]+1 : 1;
+    return a;
+  }, {});
+
+  return Object.keys(group).reduce((a,k) => (group[k] > a.n)? {nr:parseInt(k), n:group[k]} : a, { nr:0, n:0 });
+}
 
 function getRandom(arr) {
   const randIndex = Math.floor( Math.random() * arr.length );
