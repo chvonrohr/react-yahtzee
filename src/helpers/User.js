@@ -46,6 +46,54 @@ class User {
           />
         )
     }
+
+
+    getBotDecision(remainThrows, dices) {
+
+      const userScores = this.scoreboard.scores;
+      const numbers = dices.map(d => d.nr);
+
+      // KEEP [option dice-indexes to keep]
+      if (remainThrows>0) {
+
+        // keep most for identical TODO: that are needed!
+        const best = getBestSame(numbers);
+        let keepNrs = [];
+        // if (best.n === 1) { // straight
+
+        // } else { //
+          keepNrs = dices.map((d, i) => d.nr===best.nr? i : null).filter(i => i!==null);
+        // }
+        return { cmd: 'KEEP', option: keepNrs }
+      }
+
+
+      // * LOGIC *
+
+      // 1. - simple: just choose first available without rethrowing
+      // 2. - search for highest score in without re-throwing dices
+      // 3. -
+
+
+      let maxPoints = 0;
+      let maxName = null;
+
+      for(let scoreName in userScores) {
+        if (userScores[scoreName] === null) {
+          let scoreFunc = Scores.find(s => scoreName===s.name);
+          let scorePoints = scoreFunc.score(numbers);
+          if (scorePoints > maxPoints || maxName === null) {
+            console.log(scorePoints, `of ${scoreName} is higher`);
+            maxName = scoreName;
+            maxPoints = scorePoints;
+          }
+        }
+      }
+
+      console.log(maxName, 'take this');
+
+      return { cmd: 'SELECT', option: maxName };
+    }
 }
 
 
