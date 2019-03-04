@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { Header, Table } from 'semantic-ui-react'
+import { Header, Table, Grid } from 'semantic-ui-react'
 import Scores from '../helpers/Scores'
 import './Scoreboard.css'
+
+const TITLE_CELL_WIDTH = 3;
+const USER_CELL_WIDTH = 1;
 
 class Scoreboard extends Component {
 
@@ -73,37 +76,48 @@ class Scoreboard extends Component {
         }));
 
         return (
-            <Table basic='very' striped celled>
-              <Table.Header>
+          <Grid centered>
+            <Grid.Column mobile={16} tablet={8} computer={8}>
 
-                <Table.Row>
-                  <Table.HeaderCell className="score"></Table.HeaderCell>
-                  {users.map(user =>
-                    <Table.HeaderCell key={user.name} className="user-info">
+              <Table basic='very' striped celled collapsing unstackable>
+                <Table.Header>
 
-                      <Header.Content>
-                        {user.avatar}
-                        {user.name}<br/>
-                        {user.isBot ? '(Bot)' : ''}
-                      </Header.Content>
-                    </Table.HeaderCell>
-                  )}
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                {rows.map(scoreRow =>
-                  <Table.Row key={scoreRow[0].scoreName}>
-                    <Table.Cell className="score">{scoreRow[0].scoreName}</Table.Cell>
-                    {scoreRow.map(userCell =>
-                      <Table.Cell key={userCell.key} className={userCell.class}>
-                        {userCell.content}
-                      </Table.Cell>
+                  <Table.Row>
+                    <Table.HeaderCell width={TITLE_CELL_WIDTH}></Table.HeaderCell>
+                    {users.map(user =>
+                      <Table.HeaderCell
+                        key={user.name}
+                        width={USER_CELL_WIDTH}
+                        verticalAlign="top"
+                        textAlign="center"
+                      >
+                        <Header.Content>
+                          {user.avatar}<br/>
+                          {user.name}<br/>
+                          {user.isBot ? '(Bot)' : ''}
+                        </Header.Content>
+                      </Table.HeaderCell>
                     )}
                   </Table.Row>
-                )}
-              </Table.Body>
-            </Table>
+                </Table.Header>
+
+                <Table.Body>
+                  {rows.map(scoreRow =>
+                    <Table.Row key={scoreRow[0].scoreName}>
+                      <Table.Cell className="score">{scoreRow[0].scoreName}</Table.Cell>
+                      {scoreRow.map(userCell =>
+                        <Table.Cell key={userCell.key} className={userCell.class}>
+                          {userCell.content}
+                        </Table.Cell>
+                      )}
+                    </Table.Row>
+                  )}
+                </Table.Body>
+              </Table>
+
+            </Grid.Column>
+          </Grid>
+
         )
     }
 }

@@ -1,6 +1,4 @@
-.ui.table thead th  {
-  text-align: center;
-}
+
 .ui.table td {
   padding-top: 3px;
   padding-bottom: 3px;
@@ -39,8 +37,4 @@
 }
 .scoreboard {
   margin-top: 30px;
-}
-.scoreboard .table {
-  width: auto;
-  margin: 0 auto;
 }

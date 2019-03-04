@@ -4,18 +4,6 @@
   padding-bottom: 50px;
 }
 
-.avatar {
-  border-radius: 50%;
-  width: 20vmin;
-  height: auto;
-  border: 3px solid #ccc;
-}
-.avatar-mini {
-  width: 50px;
-  display: block;
-}
-
-
 /* INPUT / BUTTONS */
 .btn {
   display: inline-block;
@@ -50,36 +38,4 @@ input[type=text] {
   box-shadow: none;
   margin-left: 10px;
   margin-bottom: 15px;
-}
-
-
-/* DICES */
-.dices-panel {
-  height: 100px;
-}
-.dice {
-  display: inline-block;
-  margin-right: 10px;
-  border: none;
-  background: none;
-  outline: none;
-  cursor: pointer;
-}
-.dice-locked {
-  opacity: 0.5;
-}
-.dices-panel.rolling .dice:not(.dice-locked) {
-  animation: shake 1s infinite;
-}
-.dices-panel.rolling .dice:nth-of-type(1) { animation-delay: -500ms; }
-.dices-panel.rolling .dice:nth-of-type(2) { animation-delay: -900ms; }
-.dices-panel.rolling .dice:nth-of-type(3) { animation-delay: -700ms; }
-.dices-panel.rolling .dice:nth-of-type(4) { animation-delay: -350ms; }
-.dices-panel.rolling .dice:nth-of-type(5) { animation-delay: -800ms; }
-
-@keyframes shake {
-  10%, 90% { transform: rotate(30deg); }
-  20%, 80% { transform: rotate(135deg); }
-  30%, 50%, 70% { transform: rotate(125deg); }
-  40%, 60% { transform: roatate(45deg); }
 }

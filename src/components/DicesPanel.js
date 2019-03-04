@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import Dice from "./Dice";
 import { getRandomDices } from "../helpers/DicesHelper";
+import styled from 'styled-components';
+
+
+const Panel = styled.div`
+  height: 100px;
+`;
+
+const Dices = styled.div`
+`;
 
 class DicesPanel extends Component {
 
@@ -17,11 +26,11 @@ class DicesPanel extends Component {
     });
   }
 
+
   render() {
     const rolling = this.props.rolling;
     const remainThrows = this.props.remainThrows;
     const dices = rolling ? this.state.animatedDices : this.props.dices;
-    let className = 'dices-panel ' + (rolling ? 'rolling' : '');
 
     // rolling animation
     if (rolling) {
@@ -29,19 +38,20 @@ class DicesPanel extends Component {
     }
 
     return (
-      <div className={className}>
+      <Panel>
 
-        <div className="dices">
+        <Dices>
           {dices.map(dice => (
             <Dice
               key={dice.id}
               id={dice.id}
               nr={dice.nr}
+              rolling={rolling}
               isLocked={dice.isLocked}
               onClick={() => this.props.toggleDice(dice.id)}
             />
           ))}
-        </div>
+        </Dices>
 
         {remainThrows > 0 ? (
           <button className="btn btn-primary" onClick={() => this.props.rollDices()}>
@@ -51,7 +61,7 @@ class DicesPanel extends Component {
           <h3>Wo willst du deine Punkte schreiben?</h3>
         )}
 
-      </div>
+      </Panel>
     );
   }
 }

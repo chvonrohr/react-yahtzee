@@ -17,11 +17,10 @@ class User {
         this.avatarFacialHair = getRandom(['Blank','BeardMedium','BeardLight','BeardMagestic','MoustaceFancy','MoustaceMagnum']);
         this.avatarFacialHairColor = this.avatarAccessories;
         this.avatarClothes = getRandom(['BlazerShirt','BlazerSweater','CollarSweater','GraphicShirt','Hoodie','Overall','ShirtCrewNeck','ShirtScoopNeck','ShirtVNeck']);
-        this.avatarColorFabric = getRandom(['Black','Blue01','Blue02','Blue03','Gray01','Gray02','PastelBlue','PastelGreen','PastelYellow','PastelRed','Pink','Red']);
+        this.avatarColorFabric = getRandom(['Black','Blue02','Blue03','Gray01','Gray02','PastelBlue','PastelGreen','PastelYellow','PastelRed','Pink','Red']); //
         // eyebrow
         this.avatarMouth = getRandom(['Concerned','Default','Disbelief','Eating','Grimace','Sad','ScreamOpen','Serious','Smile','Tongue','Twinkle','Vomit']);
         this.avatarSkin = getRandom(['Tanned','Yellow','Pale','Light','Brown','DarkBrown','Black']);
-
 
         // eyeType='WinkWacky'
         // eyebrowType='RaisedExcitedNatural'
@@ -83,14 +82,14 @@ class User {
           let scoreFunc = Scores.find(s => scoreName===s.name);
           let scorePoints = scoreFunc.score(numbers);
           if (scorePoints > maxPoints || maxName === null) {
-            console.log(scorePoints, `of ${scoreName} is higher`);
+            // console.log(scorePoints, `of ${scoreName} is higher`);
             maxName = scoreName;
             maxPoints = scorePoints;
           }
         }
       }
 
-      console.log(maxName, 'take this');
+      // console.log(maxName, 'take this');
 
       return { cmd: 'SELECT', option: maxName };
     }
