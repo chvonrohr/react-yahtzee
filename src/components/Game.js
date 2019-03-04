@@ -17,7 +17,7 @@ class Game extends Component {
       finito: false
     };
 
-    this.ANIMATION_DURATION = 100; //1500;
+    this.ANIMATION_DURATION = 1500; //1500;
     this.BOT_WAIT_DURATION = 100; //1000;
   }
 
@@ -50,7 +50,7 @@ class Game extends Component {
     if (!activeUser.isBot) return;
 
     let decision = activeUser.getBotDecision(this.state.remainThrows, this.state.dices);
-    console.log(decision, 'bot decision for '+activeUser.name);
+    // console.log(decision, 'bot decision for '+activeUser.name);
 
     setTimeout(() => {
       switch(decision.cmd) {
