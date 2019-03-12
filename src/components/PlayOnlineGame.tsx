@@ -138,7 +138,7 @@ class PlayOnlineGame extends Component<IProps, IState> {
     const activeUserId:number = game ? game.activePlayer : null;
     const remainingThrows:number = game ? game.remainingThrows : 0;
     const activeUser:User = users[activeUserId];
-    const itsMe = activeUser.userId === w1rdfc b
+    // const itsMe = activeUser.userId === w1rdfc b
 
     console.log(game, 'game');
     console.log(remainingThrows, 'remainingThrows');
