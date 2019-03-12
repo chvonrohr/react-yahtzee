@@ -7,7 +7,8 @@ import { withAuthentication } from './Session';
 import { AuthUserContext/*, withAuthorization */} from './Session'
 
 const INITIAL_STATE = {
-  user: null
+  user: null,
+  nickname: null,
 };
 
 class PlayOnline extends Component {
@@ -17,22 +18,26 @@ class PlayOnline extends Component {
       this.state = { ...INITIAL_STATE };
     }
 
-    onRegister(nickname, user) {
-      console.log(user, nickname);
+    onRegister(nickname/*, user*/) {
+      this.setState({ nickname });
     }
 
     render() {
-      const playerName = 'SCH name ' + Math.floor(Math.random()*1000);
+      const playerName = this.state.nickname; //'SCH name ' + Math.floor(Math.random()*1000);
       return (
         <div>
           <AuthUserContext.Consumer>
-            {authUser => authUser ? (
+            {authUser => (authUser && playerName) ? (
                 <FirebaseContext.Consumer>
                   {firebase => <PlayOnlineGame firebase={firebase} authUser={authUser} playerName={playerName} />}
                 </FirebaseContext.Consumer>
               ) : (
                 <FirebaseContext.Consumer>
-                  {firebase => <PlayOnlineForm firebase={firebase} authUser={authUser} playerName={playerName} />}
+                  {firebase => <PlayOnlineForm
+                                  firebase={firebase}
+                                  authUser={authUser}
+                                  playerName={playerName}
+                                  onRegister={(nickname) => this.onRegister(nickname) }/>}
                 </FirebaseContext.Consumer>
               )
             }

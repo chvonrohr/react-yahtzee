@@ -12,6 +12,8 @@
  */
 
 const functions = require('firebase-functions');
+const Scores = require('./scores');
+console.log(Scores, 'Scores class');
 
 // const cors = require('cors')({origin: true});
 // const database = require('firebase/database');
@@ -158,8 +160,6 @@ exports.startGame = functions.https.onCall((data, context) => { //https://fireba
   // auth
   if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
 
-  console.log(data, 'data start game');
-
   if (!data.gameId) return {status: 'error', code: 500, message: 'No game passed'};
 
   return admin.firestore().doc('games/' + data.gameId).update({
@@ -175,8 +175,6 @@ exports.startGame = functions.https.onCall((data, context) => { //https://fireba
  */
 exports.rollDices = functions.https.onCall((data, context) => { //https://firebase.google.com/docs/functions/callable
 
-  console.log(data, 'data roll dices');
-
   // auth
   if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
   const userId = context.auth ? context.auth.uid : 'no-user-found';
@@ -186,13 +184,10 @@ exports.rollDices = functions.https.onCall((data, context) => { //https://fireba
 
   if (!gameId) return {status: 'error', code: 500, message: 'No game passed'};
 
-  console.log('games/' + gameId, 'find game');
   return admin.firestore().doc('games/' + gameId).get().then( game => {
-    console.log(game, 'game in rolldices');
-    if (!game) return {status: 'error', code: 500, message: 'No game found'};
 
+    if (!game) return {status: 'error', code: 500, message: 'No game found'};
     const gameData = game.data(); //game.get();
-    console.log(gameData, 'gameData in rolldices');
 
     // check active user is rolling
     if (gameData.players[ gameData.activePlayer ].user !== userId)
@@ -202,18 +197,16 @@ exports.rollDices = functions.https.onCall((data, context) => { //https://fireba
       return {status: 'error', code: 500, message: 'No throws remaining'}; // check remaining throws
 
     const totalThrows = gameData.remainingThrows || 3;
-    console.log(totalThrows, 'total remain');
     const update = {
       dices: getRandomDices(gameData.dices, keepDices),
       remainingThrows: (totalThrows - 1)
     }
 
-    console.log('doo');
-
     return admin.firestore().doc('games/' + data.gameId).update(update);
   })
   .catch(e => {
     console.log(e, 'error in roll dices');
+    return {status: 'error', code: 500, message: 'error during dice roll'};
   });
 
 });
@@ -235,15 +228,11 @@ exports.setPoints = functions.https.onCall((data, context) => { //https://fireba
   if (!scoreKey) return {status: 'error', code: 500, message: 'No scoreKey passed'};
 
   return admin.firestore().doc('games/' + gameId).get().then( game => {
-    console.log(game, 'setpoints');
     if (!game) return {status: 'error', code: 500, message: 'No game found'};
 
     const gameData = game.data();
     const activeUser = gameData.players[ gameData.activePlayer ];
     const activeUserId = gameData.players[ gameData.activePlayer ].user;
-    console.log(gameData, 'gameData in setPoints');
-    console.log(activeUser, 'activeUser in setPoints');
-    console.log(activeUser.scores, 'scores of user in setPoints');
 
     if (activeUserId !== userId)
       return {status: 'error', code: 500, message: 'You are not at the row'};
@@ -251,10 +240,17 @@ exports.setPoints = functions.https.onCall((data, context) => { //https://fireba
     if (!activeUser.scores || activeUser.scores[scoreKey] !== null)
       return {status: 'error', code: 500, message: 'You cant set this scoreKey anymore'};
 
+    // calculate score
+    const ScoresHelper = new Scores();
+    const diceNumbers = gameData.dices.map(d => d.nr);
+    const diceScore = ScoresHelper.getPointsFor(scoreKey, diceNumbers);
 
-    const updateData = {};
-    updateData[`players.${gameData.activePlayer}.scores.${scoreKey}`] = 72; // set score
-    updateData['activePlayer'] = (gameData.activeUser + 1) % gameData.players.length; // next player
+    // update
+    const updateData = gameData;
+    updateData.players[gameData.activePlayer].scores[scoreKey] = diceScore; // set score
+    updateData.activePlayer = (gameData.activePlayer + 1) % gameData.players.length; // next player
+    updateData.remainingThrows = 3;
+    updateData.dices = [];
     console.log(updateData, 'updateData');
 
     return admin.firestore().doc(`games/${data.gameId}`).update(updateData);

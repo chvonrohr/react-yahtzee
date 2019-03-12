@@ -12,8 +12,8 @@ class Game extends Component {
     this.state = {
       activeUser: 0,
       // dices: getRandomDices(),
-      // rolling: false, // dices are rolling (animated)
-      // remainThrows: 3,
+      rolling: false, // dices are rolling (animated)
+      remainThrows: 3,
       finito: false
     };
 
@@ -21,9 +21,9 @@ class Game extends Component {
     this.BOT_WAIT_DURATION = 100; //1000;
   }
 
-  componentDidMount() {
-    this.rollDices();
-  }
+  // componentDidMount() {
+  //   this.rollDices();
+  // }
 
   // ROLL shake : http://qnimate.com/detect-shake-using-javascript/
 
@@ -78,27 +78,59 @@ class Game extends Component {
   render() {
     const dices = this.props.dices;
     const users = this.props.users;
+    const remainThrows = this.props.remainThrows;
+
+    const isInteraction = this.props.isInteraction;
+    const isOnline = this.props.isMe;
+    const activeUser = users[this.props.activeUser];
+    const msg = (isOnline && isInteraction ? 'Du bist' : activeUser.name+" ist") + " an der Reihe";
+
+    // wait screen
+    const isPlayerStart = (remainThrows === 3);
+
 
     return (
       <div className="game">
 
-        <DicesPanel
-          dices={dices}
-          rolling={this.props.rolling}
-          remainThrows={this.props.remainThrows}
-          rollDices={() => this.rollDices() }
-          toggleDice={(diceNr) => this.props.toggleDiceLock(diceNr)}
-        />
+        {isPlayerStart ? (
 
-        <div className="scoreboard">
-          <Scoreboard
-            activeUser={this.props.activeUser}
-            users={users}
-            dices={dices}
-            rolling={this.props.rolling}
-            setPoints={scoreKey => this.props.setPoints(scoreKey)}
-          />
-        </div>
+          <div>
+            <h1>{msg}</h1>
+            {isInteraction ? (
+              <button className="btn btn-primary" onClick={() => this.rollDices()}>
+                würfeln
+              </button>
+            ) : ''}
+          </div>
+
+        ) : (
+
+          <div>
+            <DicesPanel
+              dices={dices}
+              rolling={this.props.rolling}
+              isInteraction={isInteraction}
+              message={msg}
+              remainThrows={remainThrows}
+              rollDices={() => this.rollDices() }
+              toggleDice={(diceNr) => this.props.toggleDiceLock(diceNr)}
+            />
+
+            <div className="scoreboard">
+              <Scoreboard
+                activeUser={this.props.activeUser}
+                users={users}
+                dices={dices}
+                rolling={this.props.rolling}
+                isInteraction={isInteraction}
+                setPoints={scoreKey => this.props.setPoints(scoreKey)}
+              />
+            </div>
+          </div>
+
+        )}
+
+
 
       </div>
     );

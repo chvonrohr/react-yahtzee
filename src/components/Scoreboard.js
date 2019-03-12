@@ -13,6 +13,7 @@ class Scoreboard extends Component {
         const dices = this.props.dices;
         const numbers = dices.map(d => d.nr);
         const rolling = this.props.rolling;
+        const isInteraction = this.props.isInteraction;
 
         const rows = Object.keys(users[0].scoreboard.scores).map(sKey => {
             return users.map((u, uNr) => {
@@ -26,7 +27,8 @@ class Scoreboard extends Component {
                 // show score or "-" for non-active users or in rolling-mode
                 if (!activeUser ||
                     rolling ||
-                    isInteger(scores[sKey])
+                    isInteger(scores[sKey] ||
+                    !isInteraction)
                 ) {
                   content = isInteger(scores[sKey]) ? scores[sKey] : '-';
 

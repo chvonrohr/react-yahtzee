@@ -64,7 +64,7 @@ class PlayOnlineForm extends Component {
       dices: getRandomDices(),
       remainThrows: 3,
       users
-    }, this.rollDices); // then, roll for next user
+    }/*, this.rollDices*/);
   }
 
 
@@ -80,6 +80,8 @@ class PlayOnlineForm extends Component {
         users={users}
         dices={dices}
         rolling={rolling}
+        isInteraction={true}
+        isOnline={false}
         remainThrows={this.state.remainThrows}
         rollDices={() => this.rollDices()}
         setPoints={(scoreKey) => this.setPoints(scoreKey)}

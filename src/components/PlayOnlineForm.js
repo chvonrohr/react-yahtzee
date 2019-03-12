@@ -33,6 +33,7 @@ class PlayOnlineForm extends Component {
       if (authUser) {
         console.log(displayName, 'update display name of '+authUser.uid);
         // this.props.firebase.user(authUser.uid).set({email: 'cv@frontal.ch'});
+        this.props.onRegister(displayName);
         return;
       }
 
@@ -47,6 +48,7 @@ class PlayOnlineForm extends Component {
         })
         .then(() => {
           this.setState({ ...INITIAL_STATE });
+          this.props.onRegister(displayName);
           // this.props.history.push(ROUTES.ONLINE);
         })
         .catch(error => {
@@ -65,9 +67,10 @@ class PlayOnlineForm extends Component {
 
     render() {
       const nameInvalid = (this.state.displayName === '');
+
       return (
         <div>
-          <h1>Wie möchtest du heissen?</h1>
+          <h1>Spielername:</h1>
 
           <form onSubmit={this.onSubmit}>
             <Input placeholder='Spielernamen' onChange={this.onChange}/>
