@@ -81,7 +81,7 @@ class Scoreboard extends Component {
           <Grid centered>
             <Grid.Column mobile={16} tablet={8} computer={8}>
 
-              <Table basic='very' striped celled collapsing unstackable>
+              <Table basic='very' celled collapsing unstackable>
                 <Table.Header>
 
                   <Table.Row>
@@ -94,7 +94,7 @@ class Scoreboard extends Component {
                         textAlign="center"
                       >
                         <Header.Content>
-                          {user.avatar}<br/>
+                          {/* {user.avatar}<br/> */}
                           {user.name}<br/>
                           {user.isBot ? '(Bot)' : ''}
                         </Header.Content>

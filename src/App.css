@@ -1,41 +1,113 @@
-.main {
-  text-align: center;
-  padding-top: 30px;
-  padding-bottom: 50px;
+body {
+  background-color: #FFDADD;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
 }
 
-/* INPUT / BUTTONS */
-.btn {
+.outer {
+  margin: 0 auto;
+  text-align: center;
+  padding: 50px 20px 30px 20px;
+}
+
+
+::-moz-selection { /* Code for Firefox */
+  color: white;
+  background: #584143;
+}
+::selection {
+  color: white; 
+  background: #584143;
+}
+
+.logo {
+  margin-top: 50px;
+  margin-bottom: 120px;
+}
+
+h1 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+}
+
+/* BUTTONS */
+
+.button{
+  transition: background 500ms;
+}
+
+.ui.button {
   display: inline-block;
-  height: 40px;
-  line-height: 40px;
-  padding: 0px 20px;
+  padding: 15px 40px;
   border: none;
   cursor: pointer;
-  border-radius: 3px;
-  margin-top: 10px;
-  font-size: 20px;
+  border-radius: 40px;
+  margin-top: 20px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   font-weight: bold;
-
-  background: #ccc;
-  color: #333;
-}
-.btn-primary {
-  background: #116cd6;
-  color: #fff;
-}
-.btn small {
-  font-weight: normal;
-}
-.btn + .btn {
-  margin-left: 15px;
+  background: black;
+  color: #BD9A9C;
 }
 
+
+.ui.button.welcome {
+  width: 250px;
+
+}
+
+.ui.button:hover{
+  background: #584143;
+  color: #BD9A9C;
+}
+
+/* special icon-button */
+.button.button-icon {
+  background: transparent;
+  border: none;
+  color: #BD9A9C;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.button-icon span {
+  bottom: -14px;
+  position: relative;
+  margin-right: 10px;
+}
+
+.button.button-icon:hover {
+  background: transparent;
+  border: none;
+  color: black;
+}
+
+.button-icon svg path,
+.button-icon svg circle {
+  stroke: #BD9A9C;
+}
+.button-icon:hover svg path,
+.button-icon:hover svg circle {
+  stroke: black;
+}
+
+/* input fields */
 input[type=text] {
-  height: 30px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
+  border: none;
+  border-bottom: 2px solid black;
+  background-color: transparent;
   box-shadow: none;
-  margin-left: 10px;
-  margin-bottom: 15px;
+  font-size: 30px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  margin-top: 20px;
+  outline: none;
+  max-width: 100%;
+}
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #BD9A9C;
+  opacity: 1; /* Firefox */
 }

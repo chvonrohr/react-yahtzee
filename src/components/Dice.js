@@ -15,7 +15,6 @@ const DiceButton = styled.button`
   background: none;
   outline: none;
   cursor: pointer;
-  opacity: ${props => props.isLocked ? 0.5 : 1};
 
   animation-name: ${props => (props.rolling && !props.isLocked) ? shake : 'none'};
   animation-duration: 500ms;
@@ -33,7 +32,8 @@ class Dice extends Component {
     }
 
     diceImageUrl() {
-        return '/images/dice/dice'+this.props.nr+'.svg';
+      const state = this.props.isLocked ? '_active' : '_passive';
+      return '/images/dice/dice' + this.props.nr + state + '.svg';
     }
 
     render() {

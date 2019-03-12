@@ -10,56 +10,18 @@ import './App.css';
 
 class App extends Component {
 
-  // constructor(props) {
-  //   super(props);
-
-  //   // // debug
-  //   // this.state = {
-  //   //   users: [ new User('chris', true), new User("fibs", true)]
-  //   // }
-  //   // return;
-  //   // // debug end
-
-  //   // // this.state = {
-  //   // //   users: null
-  //   // // };
-
-
-  // }
-
-
   render() {
 
     return (
-      <div>
-         {/* <FirebaseContext.Consumer>
-          {firebase => {
-            return <div>I've access to Firebase and render something.</div>;
-          }}
-        </FirebaseContext.Consumer> */}
-        <Router>
-          <div>
-            <Route exact path={ROUTES.WELCOME} component={Welcome} />
-            <Route path={ROUTES.OFFLINE} component={PlayOffline} />
-            <Route path={ROUTES.ONLINE} component={PlayOnline} />
-            {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-            <Route path={ROUTES.HOME} component={HomePage} />
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route path={ROUTES.ADMIN} component={AdminPage} /> */}
-          </div>
-        </Router>
-      </div>
+      <Router>
+        <div className="outer">
+          <img src="/images/Logo_Yahtzee.svg" className="logo" alt="Schönes Logo"/>
+          <Route exact path={ROUTES.WELCOME} component={Welcome} />
+          <Route path={ROUTES.OFFLINE} component={PlayOffline} />
+          <Route path={ROUTES.ONLINE} component={PlayOnline} />
+        </div>
+      </Router>
     );
-
-    // return (
-    //   <div className="main">
-    //     {users ? (
-    //       <Game users={users} />
-    //     ) : (
-    //       <UserSelection onSubmit={(users) => this.setUsers(users) } />
-    //     )}
-    //   </div>
-    // );
   }
 }
 

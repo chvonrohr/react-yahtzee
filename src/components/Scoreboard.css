@@ -1,11 +1,23 @@
 
-.ui.table td {
-  padding-top: 3px;
-  padding-bottom: 3px;
+.ui.table {
+  border: 2px;
+  outline-style: double;
 }
+
+.ui.table tr {
+}
+
+.ui.table td {
+  border-top: 1px solid black ; 
+  /* padding-top: 3px;
+  padding-bottom: 3px; */
+  padding: 3px;
+}
+
 .ui.table td,
 .ui.table th {
   text-align: center;
+  height: 45px;
 }
 
 .ui.table th.user-info {
@@ -15,25 +27,31 @@
 .ui.table .score {
   width: 140px;
   text-align: left;
+  padding-left: 10px !important;
 }
 .ui.table td.active {
   background: rgba(0,0,0, 0.05);
 }
 .ui.table td.total {
-  font-weight: bold;
+  font-weight: 700;
+  border-bottom: 2px solid black;
 }
 .ui.table td.active-selection {
   padding: 0;
 }
 .ui.table td.active-selection button {
-  width: 100%;
-  height: 25px;
-  background: lightgreen;
+  height: 30px;
+  width: 30px;
+  background: white;
   border: none;
   cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border-radius: 50%;
 }
 .ui.table td.active-selection button:hover {
-  background: greenyellow;
+  background: rgba(255,255,255, 0.5);
 }
 .scoreboard {
   margin-top: 30px;

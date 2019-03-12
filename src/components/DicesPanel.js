@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Dice from "./Dice";
 import { getRandomDices } from "../helpers/DicesHelper";
 import styled from 'styled-components';
+import { Button } from 'semantic-ui-react';
 
 
 const Panel = styled.div`
@@ -59,9 +60,9 @@ class DicesPanel extends Component {
         {this.props.isInteraction ? (
           <div>
             {remainThrows > 0 ? (
-              <button className="btn btn-primary" onClick={() => this.props.rollDices()}>
+              <Button onClick={() => this.props.rollDices()}>
                 würfeln <small>({3 - remainThrows} / 3)</small>
-              </button>
+              </Button>
             ) : (
               <h3>Wo willst du deine Punkte schreiben?</h3>
             )}

@@ -1,5 +1,18 @@
 import React, { Component } from "react";
 import User from "../helpers/User";
+import { Button } from 'semantic-ui-react'
+
+const svgButton = (
+  <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#BD9A9C" stroke-width="2" fill="none" fill-rule="evenodd">
+    <g stroke-linecap="square">
+      <path d="M11.33333 20h17.33334M20 12v17"/>
+    </g>
+    <circle cx="20" cy="20" r="19"/>
+  </g>
+</svg>
+)
+
 
 class PlayOfflineForm extends Component {
   constructor(props) {
@@ -38,37 +51,35 @@ class PlayOfflineForm extends Component {
     const users = this.state.users.slice(0);
     return (
       <div>
-        <h1>Gib deine Spieler-Namen ein:</h1>
         {users.map((user, nr) => (
           <div key={nr}>
-            Spieler {nr + 1}:
+            {/* Spieler {nr + 1}: */}
             <input
               type="text"
               value={user.name}
+              placeholder={`Spielername ${nr + 1}`}
               name={nr}
               onKeyDown={e => this.addUser(e)}
               onChange={this.handleUserInput}
               required
             />
-            <label>
+            {/* <label>
               <input
                 type="checkbox"
                 value={user.isBot}
                 name={nr}
                 onChange={this.handleUserInput}
               /> {" "} Bot
-            </label>
+            </label> */}
           </div>
         ))}
-        <button className="btn" onClick={() => this.addUser()}>
-          Another User
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={() => this.props.onSubmit(this.state.users)}
-        >
+        <Button className="button-icon" onClick={() => this.addUser()}>
+          <span>{svgButton}</span>
+          zusätzlicher Spieler
+        </Button>
+        <Button onClick={() => this.props.onSubmit(this.state.users)}>
           Start
-        </button>
+        </Button>
       </div>
     );
   }

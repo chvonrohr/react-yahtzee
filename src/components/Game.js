@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Scoreboard from "./Scoreboard";
 import DicesPanel from "./DicesPanel";
+import { Button } from 'semantic-ui-react'
 // import Scores from "../helpers/Scores";
 // import { getRandomDices } from "../helpers/DicesHelper";
 //import UserScoreboard from './helpers/UserScoreboard';
@@ -97,9 +98,9 @@ class Game extends Component {
           <div>
             <h1>{msg}</h1>
             {isInteraction ? (
-              <button className="btn btn-primary" onClick={() => this.rollDices()}>
+              <Button onClick={() => this.rollDices()}>
                 würfeln
-              </button>
+              </Button>
             ) : ''}
           </div>
 

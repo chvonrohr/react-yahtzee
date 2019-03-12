@@ -4,6 +4,7 @@ import Firebase from './Firebase/Firebase'
 import Game from './Game'
 import User from '../helpers/User'
 import { IDice } from '../interfaces'
+import { Button } from 'semantic-ui-react'
 
 
 interface IProps {
@@ -172,7 +173,7 @@ class PlayOnlineGame extends Component<IProps, IState> {
                   )}
                 </ul>
                 <i>Suche weitere Spieler...</i>
-                <button onClick={() => this.startGame()}>Spiel starten</button>
+                <Button onClick={() => this.startGame()}>Spiel starten</Button>
               </div>
             ) : (
               <Game
