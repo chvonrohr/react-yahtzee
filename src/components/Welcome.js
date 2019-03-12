@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 
-import UserSelection from './UserSelection';
+import UserSelection from './PlayOffline';
 import PlayOnline from './PlayOnline';
 
 // import { withAuthorization } from '../Session';

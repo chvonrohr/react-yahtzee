@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import Firebase, { FirebaseContext } from './Firebase'
+import { FirebaseContext } from './Firebase'
 import PlayOnlineForm from './PlayOnlineForm'
 import PlayOnlineGame from './PlayOnlineGame'
+import { withAuthentication } from './Session';
 
 import { AuthUserContext/*, withAuthorization */} from './Session'
 
@@ -21,32 +22,26 @@ class PlayOnline extends Component {
     }
 
     render() {
+      const playerName = 'SCH name ' + Math.floor(Math.random()*1000);
       return (
         <div>
           <AuthUserContext.Consumer>
             {authUser => authUser ? (
                 <FirebaseContext.Consumer>
-                  {firebase => <PlayOnlineGame firebase={firebase} authUser={authUser} />}
+                  {firebase => <PlayOnlineGame firebase={firebase} authUser={authUser} playerName={playerName} />}
                 </FirebaseContext.Consumer>
               ) : (
                 <FirebaseContext.Consumer>
-                  {firebase => <PlayOnlineForm firebase={firebase} authUser={authUser} />}
+                  {firebase => <PlayOnlineForm firebase={firebase} authUser={authUser} playerName={playerName} />}
                 </FirebaseContext.Consumer>
               )
             }
           </AuthUserContext.Consumer>
-          {/* <AuthUserContext.Consumer>
-            {authUser =>
-              <FirebaseContext.Consumer>
-                {firebase => <PlayOnlineForm firebase={firebase} authUser={authUser} />}
-              </FirebaseContext.Consumer>
-            }
-          </AuthUserContext.Consumer> */}
-
         </div>
 
       )
     }
 }
 
-export default PlayOnline
+// export default PlayOnline
+export default withAuthentication(PlayOnline);

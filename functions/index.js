@@ -1,3 +1,5 @@
+// import Player from './playerdata'
+
 /**
  * Cloud Functions
  *
@@ -18,74 +20,122 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase); // ??
 
-
-function snapToDataArray(snapshot) {
-  const vals = [];
-  snapshot.forEach(s => {
-    console.log(s, 's data found');
-    vals.push(Object.assign({}, s.val(), { _key: s.key }));
-  });
-  return vals;
-}
+// snapshot to array helper
 function snapToArray(snapshot) {
   const vals = [];
-  snapshot.forEach(s => {
-    // console.log(s, 's found');
-    vals.push(s);
-  });
+  snapshot.forEach(s => { vals.push(s); });
   return vals;
 }
 
 /**
- * FUNCTIONS
+ * HELPER FUNCTIONS
  */
 
-const createGame = (userId => {
+function getRandom(arr) {
+  const randIndex = Math.floor( Math.random() * arr.length );
+  return arr[ randIndex ];
+}
+
+const createGame = (userId, playerName) => {
   // const await user = admin.firestore.collection('users').doc(userId).get();
-  const users = userId ? [userId] : [];
+  const users = [createPlayer(userId, playerName, {/* TODO AVATAR */})]
   const game = {
     state: 'starting', //'starting', 'playing', 'end'
     players: users,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    activePlayer: null,
+
+    activePlayer: null, // game state (for active user)
+    dices: null,
+    remainingThrows: 3,
   };
   console.log(game, 'created game');
-  return admin.firestore().collection('games').add(game);
-})
+  return admin.firestore().collection('games').add(game).then(game => game.get());
+}
 
-// exports.joinGame = functions.https.onRequest((req, res) => {
+
+const createPlayer = (userId, playerName /*, avatar*/) => {
+  return {
+    user: userId,
+    name: playerName,
+    avatar: {
+      hair: getRandom(['NoHair','Eyepatch','Hat','Hijab','Turban','LongHairBigHair','LongHairBob','LongHairBun','LongHairCurly','LongHairCurvy','LongHairFrida','ShortHairDreads01','ShortHairFrizzle'])
+    },
+    scores: {
+      ones: null,
+      twos: null,
+      threes: null,
+      fours: null,
+      fives: null,
+      sixes: null,
+      threeofakind: null,
+      fourofakind: null,
+      fullhouse: null,
+      smallstraight: null,
+      largestraight: null,
+      chance: null,
+      yahtzee: null,
+    }
+  }
+}
+
+const getRandomDices = (dices, keepDices)  => {
+  keepDices = keepDices || [];
+  dices = dices || Array(5).fill(1).map((_, i) => { return { id: i, nr: 1, isLocked: false }; });
+  return dices.map(dice => {
+    dice.isLocked = keepDices.includes(dice.id);
+    if (!dice.isLocked) {
+      dice.nr = Math.ceil(Math.random() * 5.99);
+    }
+    return dice;
+  });
+}
+
+/**
+ * CALLABLE FUNCTIONS
+ */
+
+ /**
+  * JOIN GAME - search for starting game or start new one
+  */
 exports.joinGame = functions.https.onCall((data, context) => { //https://firebase.google.com/docs/functions/callable
+  // exports.joinGame = functions.https.onRequest((req, res) => {
 
   // auth
-  // if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
-  // const userId = context.auth.uid;
+  if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
 
-  // local debug
-  const userId = 'xyz';
+  const userId = context.auth ? context.auth.uid : 'no-user-found';
+  const playerName = data.playerName || 'Gago George';
   let finalGame = null;
 
-  // TODO: create player entry (nickname, avatardetails, scores, )
+  // OPTIONAL:
+  // 1. search for running game for logged user
 
   // search for open game ()
   return admin.firestore().collection('games')
-    .where('state','==','starting').get()
+    .where('state', '==', 'starting')
+    .get()
     .then(snap => { // 1. find game (or create)
+
       if (!snap.empty) {
         const foundGame = snapToArray(snap)[0];
         console.log(foundGame, 'found game');
         return new Promise(resolve => { resolve(foundGame); });
       }
 
-      return createGame(userId);
+      return createGame(userId, playerName);
     })
     .then(game => { // 2. create player from data and add to game
       console.log(game, 'game 2.'); // = QueryDocumentSnapshot -> data/get(xy)
+
       const players = game.get('players') || [];
-      players.push(userId); // add user
+      const playerExists = players.some(p => p.user === userId);
+
+      if (!playerExists) {
+        players.push( createPlayer(userId, playerName, {/* TODO AVATAR */}) );
+      }
+
       console.log(players, 'players');
       finalGame = game;
-      // return game.set({users: [ new Set(...users) ]}); // unique users
-      // return admin.firestore().doc('games/' + game.id).set({ players });
 
       return  admin.firestore().doc('games/' + game.id).update({ players });
     })
@@ -95,9 +145,126 @@ exports.joinGame = functions.https.onCall((data, context) => { //https://firebas
       return { gameId: finalGame.id };
     })
     .catch(error => {
-        console.log("Error getting documents: ", error);
+      console.log("Error getting documents: ", error);
     });
 });
+
+
+/**
+  * START GAME - start game
+  */
+exports.startGame = functions.https.onCall((data, context) => { //https://firebase.google.com/docs/functions/callable
+
+  // auth
+  if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
+
+  console.log(data, 'data start game');
+
+  if (!data.gameId) return {status: 'error', code: 500, message: 'No game passed'};
+
+  return admin.firestore().doc('games/' + data.gameId).update({
+    activePlayer: 0,
+    state: 'running',
+    dices: getRandomDices(),
+    remainingThrows: 3
+  });
+});
+
+/**
+ * ROLL DICES - only for user which is active
+ */
+exports.rollDices = functions.https.onCall((data, context) => { //https://firebase.google.com/docs/functions/callable
+
+  console.log(data, 'data roll dices');
+
+  // auth
+  if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
+  const userId = context.auth ? context.auth.uid : 'no-user-found';
+
+  const gameId = data.gameId;
+  const keepDices = data.keepDices || [];
+
+  if (!gameId) return {status: 'error', code: 500, message: 'No game passed'};
+
+  console.log('games/' + gameId, 'find game');
+  return admin.firestore().doc('games/' + gameId).get().then( game => {
+    console.log(game, 'game in rolldices');
+    if (!game) return {status: 'error', code: 500, message: 'No game found'};
+
+    const gameData = game.data(); //game.get();
+    console.log(gameData, 'gameData in rolldices');
+
+    // check active user is rolling
+    if (gameData.players[ gameData.activePlayer ].user !== userId)
+      return {status: 'error', code: 500, message: 'You are not at the row'};
+
+    if (gameData.remainingThrows <= 0)
+      return {status: 'error', code: 500, message: 'No throws remaining'}; // check remaining throws
+
+    const totalThrows = gameData.remainingThrows || 3;
+    console.log(totalThrows, 'total remain');
+    const update = {
+      dices: getRandomDices(gameData.dices, keepDices),
+      remainingThrows: (totalThrows - 1)
+    }
+
+    console.log('doo');
+
+    return admin.firestore().doc('games/' + data.gameId).update(update);
+  })
+  .catch(e => {
+    console.log(e, 'error in roll dices');
+  });
+
+});
+
+
+/**
+ * ROLL DICES - only for user which is active
+ */
+exports.setPoints = functions.https.onCall((data, context) => { //https://firebase.google.com/docs/functions/callable
+
+  // auth
+  if (!context.auth) return {status: 'error', code: 401, message: 'Not signed in'};
+  const userId = context.auth ? context.auth.uid : 'no-user-found';
+
+  const gameId = data.gameId;
+  const scoreKey = data.scoreKey;
+
+  if (!gameId) return {status: 'error', code: 500, message: 'No game passed'};
+  if (!scoreKey) return {status: 'error', code: 500, message: 'No scoreKey passed'};
+
+  return admin.firestore().doc('games/' + gameId).get().then( game => {
+    console.log(game, 'setpoints');
+    if (!game) return {status: 'error', code: 500, message: 'No game found'};
+
+    const gameData = game.data();
+    const activeUser = gameData.players[ gameData.activePlayer ];
+    const activeUserId = gameData.players[ gameData.activePlayer ].user;
+    console.log(gameData, 'gameData in setPoints');
+    console.log(activeUser, 'activeUser in setPoints');
+    console.log(activeUser.scores, 'scores of user in setPoints');
+
+    if (activeUserId !== userId)
+      return {status: 'error', code: 500, message: 'You are not at the row'};
+
+    if (!activeUser.scores || activeUser.scores[scoreKey] !== null)
+      return {status: 'error', code: 500, message: 'You cant set this scoreKey anymore'};
+
+
+    const updateData = {};
+    updateData[`players.${gameData.activePlayer}.scores.${scoreKey}`] = 72; // set score
+    updateData['activePlayer'] = (gameData.activeUser + 1) % gameData.players.length; // next player
+    console.log(updateData, 'updateData');
+
+    return admin.firestore().doc(`games/${data.gameId}`).update(updateData);
+  })
+  .catch(e => {
+    console.log(e, 'error in roll dices');
+  });
+
+});
+
 
 
 // * *  example: when a new xx is created  * *

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Scoreboard from "./Scoreboard";
 import DicesPanel from "./DicesPanel";
-import Scores from "../helpers/Scores";
-import { getRandomDices } from "../helpers/DicesHelper";
+// import Scores from "../helpers/Scores";
+// import { getRandomDices } from "../helpers/DicesHelper";
 //import UserScoreboard from './helpers/UserScoreboard';
 
 class Game extends Component {
@@ -11,9 +11,9 @@ class Game extends Component {
     super(props);
     this.state = {
       activeUser: 0,
-      dices: getRandomDices(),
-      rolling: false, // dices are rolling (animated)
-      remainThrows: 3,
+      // dices: getRandomDices(),
+      // rolling: false, // dices are rolling (animated)
+      // remainThrows: 3,
       finito: false
     };
 
@@ -25,23 +25,22 @@ class Game extends Component {
     this.rollDices();
   }
 
+  // ROLL shake : http://qnimate.com/detect-shake-using-javascript/
+
   rollDices() {
 
     // remain throws, if 0, locked!
-    if (this.state.remainThrows <= 0) return;
-    if (this.state.rolling) return;
+    if (this.props.remainThrows <= 0) return;
+    if (this.props.rolling) return;
 
-    //this.setState((state /*, props*/ ) => ({
-    this.setState({
-      rolling: true,
-      remainThrows: (this.state.remainThrows - 1),
-      dices: getRandomDices(this.state.dices)
-    });
+    if (this.props.rollDices) {
+      this.props.rollDices();
+    }
 
-    // stop rolling animation
-    setTimeout(() => {
-      this.setState({ rolling: false }, this.botDecision);
-    }, this.ANIMATION_DURATION);
+    // // stop rolling animation
+    // setTimeout(() => {
+    //   this.setState({ rolling: false }, this.botDecision);
+    // }, this.ANIMATION_DURATION);
   }
 
   // automatic bot decision if user is bot
@@ -49,7 +48,7 @@ class Game extends Component {
     const activeUser = this.props.users[ this.state.activeUser ];
     if (!activeUser.isBot) return;
 
-    let decision = activeUser.getBotDecision(this.state.remainThrows, this.state.dices);
+    let decision = activeUser.getBotDecision(this.state.remainThrows, this.props.dices);
     // console.log(decision, 'bot decision for '+activeUser.name);
 
     setTimeout(() => {
@@ -61,7 +60,7 @@ class Game extends Component {
 
         case 'KEEP':
           const keep = decision.option;
-          this.state.dices.forEach((d,i) => {
+          this.props.dices.forEach((d,i) => {
             if (d.isLocked && !keep.includes(i)) {
               this.toggleDiceLock(i);
             } else if (!d.isLocked && keep.includes(i)) {
@@ -74,46 +73,10 @@ class Game extends Component {
           break;
       }
     }, this.BOT_WAIT_DURATION);
-
-
-  }
-
-  toggleDiceLock(id) {
-    if (this.state.rolling) return;
-    const dices = this.state.dices.slice(0);
-    dices[id].isLocked = !dices[id].isLocked;
-    this.setState({ dices });
-  }
-
-  setPoints(scoreKey) {
-
-    // update scoreboard
-    const users = this.props.users.slice(0);
-    const activeUser = users[this.state.activeUser];
-    const scoreFunc = Scores.find(s => s.name === scoreKey);
-    const nextUser = (this.state.activeUser + 1) % users.length;
-    const numbers = this.state.dices.map(d => d.nr);
-
-    activeUser.scoreboard.scores[scoreKey] = scoreFunc.score(numbers);
-
-    // check finished
-    const lastUser = users[ users.length-1 ];
-    if (!Object.values(lastUser.scoreboard.scores).some(s => s===null)) {
-      this.setState({ finito: true });
-      return;
-    }
-
-    // next user & reset dices
-    this.setState({
-      activeUser: nextUser, // rotate users
-      dices: getRandomDices(),
-      remainThrows: 3,
-      users
-    }, this.rollDices); // then, roll for next user
   }
 
   render() {
-    const dices = this.state.dices;
+    const dices = this.props.dices;
     const users = this.props.users;
 
     return (
@@ -121,19 +84,19 @@ class Game extends Component {
 
         <DicesPanel
           dices={dices}
-          rolling={this.state.rolling}
-          remainThrows={this.state.remainThrows}
+          rolling={this.props.rolling}
+          remainThrows={this.props.remainThrows}
           rollDices={() => this.rollDices() }
-          toggleDice={(diceNr) => this.toggleDiceLock(diceNr)}
+          toggleDice={(diceNr) => this.props.toggleDiceLock(diceNr)}
         />
 
         <div className="scoreboard">
           <Scoreboard
-            activeUser={this.state.activeUser}
+            activeUser={this.props.activeUser}
             users={users}
             dices={dices}
-            rolling={this.state.rolling}
-            setPoints={scoreKey => this.setPoints(scoreKey)}
+            rolling={this.props.rolling}
+            setPoints={scoreKey => this.props.setPoints(scoreKey)}
           />
         </div>
 

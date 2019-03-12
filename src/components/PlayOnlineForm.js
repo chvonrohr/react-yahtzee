@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Button } from 'semantic-ui-react'
-import { AuthUserContext, withAuthorization } from './Session'
+// import { AuthUserContext, withAuthorization } from './Session'
 //import { auth } from 'firebase';
 // import * as ROUTES from '../constants/routes'
 
