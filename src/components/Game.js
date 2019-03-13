@@ -11,20 +11,16 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeUser: 0,
-      // dices: getRandomDices(),
-      rolling: false, // dices are rolling (animated)
-      remainThrows: 3,
       finito: false
     };
 
     this.ANIMATION_DURATION = 1500; //1500;
-    this.BOT_WAIT_DURATION = 100; //1000;
+    this.BOT_WAIT_DURATION = 2000; //1000;
   }
 
-  // componentDidMount() {
-  //   this.rollDices();
-  // }
+  componentDidMount() {
+    this.botDecision();
+  }
 
   // ROLL shake : http://qnimate.com/detect-shake-using-javascript/
 
@@ -38,19 +34,34 @@ class Game extends Component {
       this.props.rollDices();
     }
 
-    // // stop rolling animation
-    // setTimeout(() => {
-    //   this.setState({ rolling: false }, this.botDecision);
-    // }, this.ANIMATION_DURATION);
+    setTimeout(() => {
+      this.botDecision();
+    }, this.ANIMATION_DURATION+50);
+  }
+
+  toggleDiceLock(diceNr) {
+    this.props.toggleDiceLock(diceNr);
+  }
+  setPoints(scoreKey) {
+    this.props.setPoints(scoreKey);
+    setTimeout(() => {
+      this.botDecision();
+    }, this.ANIMATION_DURATION);
   }
 
   // automatic bot decision if user is bot
   botDecision() {
-    const activeUser = this.props.users[ this.state.activeUser ];
+    // check waiting mode
+    console.log('check bot rolling');
+    if (this.props.rolling) return;
+
+    // check active user is bot
+    const activeUser = this.props.users[ this.props.activeUser ];
+    console.log(activeUser, 'check bot user');
     if (!activeUser.isBot) return;
 
-    let decision = activeUser.getBotDecision(this.state.remainThrows, this.props.dices);
-    // console.log(decision, 'bot decision for '+activeUser.name);
+    let decision = activeUser.getBotDecision(this.props.remainThrows, this.props.dices);
+    console.log(decision, 'bot decision for '+activeUser.name);
 
     setTimeout(() => {
       switch(decision.cmd) {
@@ -81,9 +92,9 @@ class Game extends Component {
     const users = this.props.users;
     const remainThrows = this.props.remainThrows;
 
-    const isInteraction = this.props.isInteraction;
     const isOnline = this.props.isMe;
     const activeUser = users[this.props.activeUser];
+    const isInteraction = this.props.isInteraction && !activeUser.isBot;
     const msg = (isOnline && isInteraction ? 'Du bist' : activeUser.name+" ist") + " an der Reihe";
 
     // wait screen
@@ -124,7 +135,7 @@ class Game extends Component {
                 dices={dices}
                 rolling={this.props.rolling}
                 isInteraction={isInteraction}
-                setPoints={scoreKey => this.props.setPoints(scoreKey)}
+                setPoints={scoreKey => this.setPoints(scoreKey)}
               />
             </div>
           </div>

@@ -21,13 +21,29 @@ class PlayOfflineForm extends Component {
       users: [new User()]
     };
 
+    this.inputRefs = [];
     this.handleUserInput = this.handleUserInput.bind(this);
+  }
+
+  componentDidMount() {
+    this.focusInput();
+  }
+  componentDidUpdate() {
+    this.focusInput();
+  }
+
+  focusInput() {
+    const inputs = document.querySelectorAll('input[type=text]');
+    if (inputs.length > 0) {
+      inputs[ inputs.length - 1 ].focus();
+    }
   }
 
   addUser(e) {
     if (e && e.keyCode && e.keyCode !== 13) {
       return;
     }
+
     const users = this.state.users.slice(0);
     users.push(new User());
     this.setState({ users });
@@ -55,7 +71,6 @@ class PlayOfflineForm extends Component {
       <div>
         {users.map((user, nr) => (
           <div key={nr}>
-            {/* Spieler {nr + 1}: */}
             <input
               type="text"
               value={user.name}
@@ -64,15 +79,16 @@ class PlayOfflineForm extends Component {
               onKeyDown={e => this.addUser(e)}
               onChange={this.handleUserInput}
               required
+              autoComplete="off"
             />
-            {/* <label>
+            <label>
               <input
                 type="checkbox"
                 value={user.isBot}
                 name={nr}
                 onChange={this.handleUserInput}
               /> {" "} Bot
-            </label> */}
+            </label>
           </div>
         ))}
         <Button className="button-icon" onClick={() => this.addUser()}>

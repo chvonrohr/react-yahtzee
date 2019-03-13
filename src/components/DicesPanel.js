@@ -58,7 +58,7 @@ class DicesPanel extends Component {
 
         {/* BUTTON OR MESSAGE */}
         {this.props.isInteraction ? (
-          <div>
+          <div className="message-area">
             {remainThrows > 0 ? (
               <Button onClick={() => this.props.rollDices()}>
                 würfeln <small>({3 - remainThrows} / 3)</small>

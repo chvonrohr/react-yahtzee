@@ -13,7 +13,6 @@ class PlayOffline extends Component {
     }
 
     start(users) {
-      console.log(users, 'start');
       const newUsers = users.slice(0);
       this.setState({ users: newUsers });
     }
@@ -21,7 +20,7 @@ class PlayOffline extends Component {
     render() {
         const users = this.state.users;
         const hasUsers = users.length>0;
-        console.log(users, 'render game');
+
         return (
           <div>
             {hasUsers ? (

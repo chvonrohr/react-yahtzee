@@ -6,6 +6,13 @@ import './Scoreboard.css'
 const TITLE_CELL_WIDTH = 3;
 const USER_CELL_WIDTH = 1;
 
+
+
+function isInteger(nr) {
+  return nr === parseInt(nr, 10)
+}
+
+
 class Scoreboard extends Component {
 
     render() {
@@ -14,6 +21,7 @@ class Scoreboard extends Component {
         const numbers = dices.map(d => d.nr);
         const rolling = this.props.rolling;
         const isInteraction = this.props.isInteraction;
+        const activeUserId = this.props.activeUser;
 
         const rows = Object.keys(users[0].scoreboard.scores).map(sKey => {
             const scoreFunc = Scores.find(s => s.name === sKey);
@@ -24,18 +32,18 @@ class Scoreboard extends Component {
               cols: users.map((u, uNr) => {
                 const scores = u.scoreboard.scores;
 
-                const activeUser = (uNr === this.props.activeUser);
+                const activeUser = (uNr === activeUserId);
 
-                let content = '-';
+                let content = '';
                 let className = activeUser ? 'active' : '';
 
                 // show score or "-" for non-active users or in rolling-mode
                 if (!activeUser ||
                     rolling ||
-                    isInteger(scores[sKey] ||
-                    !isInteraction)
+                    scores[sKey] !== null ||
+                    !isInteraction
                 ) {
-                  content = isInteger(scores[sKey]) ? scores[sKey] : '-';
+                  content = isInteger(scores[sKey]) ? scores[sKey] : '';
 
                 // show score-selection button and points otherwise
                 } else {
@@ -50,7 +58,6 @@ class Scoreboard extends Component {
 
                 return {
                     key: uNr+"/"+sKey,
-                    // scoreName: scoreFunc.title,
                     class: className,
                     content
                 };
@@ -62,10 +69,10 @@ class Scoreboard extends Component {
         rows.splice(6,0, {
           class: 'total',
           title: 'Summe',
-          cols: users.map(u => {
+          cols: users.map((u,uid) => {
             return {
               key: u.name+"/partly",
-              class: 'total',
+              class: 'total ' + (uid===activeUserId ? 'active' : ''),
               content: (
                 <span>{u.scoreboard.partlyScore}</span>
               )
@@ -77,9 +84,10 @@ class Scoreboard extends Component {
         rows.splice(7,0, {
           class: 'bonus',
           title: 'Bonus',
-          cols: users.map(u => {
+          cols: users.map((u,uid) => {
             return {
               key: u.name+"/bonus",
+              class: (uid===activeUserId ? 'active' : ''),
               content: (
                 <span>{u.scoreboard.bonus}</span>
               )
@@ -91,9 +99,10 @@ class Scoreboard extends Component {
         rows.push({
           class: 'total',
           title: 'Total',
-          cols: users.map(u => {
+          cols: users.map((u,uid) => {
             return {
               key: u.name+"/totalScore",
+              class: (uid===activeUserId ? 'active' : ''),
               content: (
                 <span>{u.scoreboard.totalScore}</span>
               )}
@@ -109,14 +118,16 @@ class Scoreboard extends Component {
 
                   <Table.Row>
                     <Table.HeaderCell width={TITLE_CELL_WIDTH}></Table.HeaderCell>
-                    {users.map(user =>
+                    {users.map((user, uid) =>
                       <Table.HeaderCell
                         key={user.name}
                         width={USER_CELL_WIDTH}
                         verticalAlign="top"
                         textAlign="center"
+                        className={uid===activeUserId ? 'active' : ''}
                       >
                         <Header.Content>
+                          <span className="active-user-sign"></span>
                           {/* {user.avatar}<br/> */}
                           {user.name}<br/>
                           {user.isBot ? '(Bot)' : ''}
@@ -148,7 +159,3 @@ class Scoreboard extends Component {
 }
 
 export default Scoreboard;
-
-function isInteger(nr) {
-  return nr === parseInt(nr, 10)
-}

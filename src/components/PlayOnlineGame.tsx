@@ -55,19 +55,17 @@ class PlayOnlineGame extends Component<IProps, IState> {
     this.props.firebase.joinGame(playerName).then(res => {
       this.setState({ gameId: res.data.gameId })
     }).catch(e => {
-      console.log(e, 'no game to join, back to name');
+      console.warn(e, 'no game to join, back to name');
     });
   }
 
   mountGame() {
-    console.log(this.state.gameId, 'load game');
     if (!this.state.gameId) return null;
     if (this.gameOff) return;
 
     this.gameOff = this.props.firebase
       .game(this.state.gameId)
       .onSnapshot(snapshot => {
-        console.log(snapshot.data(), 'game updated');
         this.setState({ game: snapshot.data() as IGame });
     });
   }
@@ -93,7 +91,6 @@ class PlayOnlineGame extends Component<IProps, IState> {
       this.setState({ rolling: true });
 
       const keepDices = this.getDices().map((d:IDice) => d.isLocked ? d.id : -1).filter((i:number) => i>=0);
-      console.log(keepDices, 'keep before roll');
       this.props.firebase.rollDices(this.state.gameId, keepDices);
 
       setTimeout(() => {
@@ -126,11 +123,7 @@ class PlayOnlineGame extends Component<IProps, IState> {
   itsMe() {
     const game = this.state.game;
     const authUser = this.props.authUser
-    console.log(game, 'game in itsme');
-    console.log(authUser, 'auth User');
-    console.log(authUser, 'auth User');
-    console.log(game ? game.activePlayer: 'no', 'active player');
-    // console.log(game && game.players ? game.players[game.activePlayer].user : 'no idea', 'auth User');
+
     return (authUser && game && game.players &&
             game.players.length > 0 && game.activePlayer !== null &&
             game.players[game.activePlayer].user === authUser.uid);
@@ -153,13 +146,6 @@ class PlayOnlineGame extends Component<IProps, IState> {
     const remainingThrows:number = game ? game.remainingThrows : 0;
     const itsMe = this.itsMe();
 
-    // console.log(game, 'game');
-    // console.log(remainingThrows, 'remainingThrows');
-    // console.log(activeUserId, 'activeUserId');
-    // console.log(activeUser, 'activeUser');
-    // console.log(this.props.authUser, 'authUser');
-    // console.log(itsMe, 'itsMe');
-
     return (
       <div>
         {game ? (
@@ -167,12 +153,14 @@ class PlayOnlineGame extends Component<IProps, IState> {
             {isStarting ? (
               <div>
                 <h1>Spieler</h1>
-                <ul>
+                <ul className="player-list">
                   {players.map((player : IPlayer) =>
                     <li key={player.user}>{player.name}</li>
                   )}
                 </ul>
+                <br/><br/>
                 <i>Suche weitere Spieler...</i>
+                <br/><br/>
                 <Button onClick={() => this.startGame()}>Spiel starten</Button>
               </div>
             ) : (

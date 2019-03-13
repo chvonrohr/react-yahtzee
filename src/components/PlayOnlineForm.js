@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 // import { AuthUserContext, withAuthorization } from './Session'
 //import { auth } from 'firebase';
 // import * as ROUTES from '../constants/routes'
@@ -7,6 +7,7 @@ import { Input, Button } from 'semantic-ui-react'
 const INITIAL_STATE = {
   displayName: '',
   error: null,
+  loading: false
 };
 
 
@@ -28,14 +29,14 @@ class PlayOnlineForm extends Component {
 
       const { displayName } = this.state;
       const authUser = this.props.authUser;
-      console.log(authUser, 'auth User');
 
       if (authUser) {
-        console.log(displayName, 'update display name of '+authUser.uid);
         // this.props.firebase.user(authUser.uid).set({email: 'cv@frontal.ch'});
         this.props.onRegister(displayName);
         return;
       }
+
+      this.setState({ loading: true });
 
       console.log(this.authUser, 'create new user');
       this.props.firebase
@@ -47,21 +48,13 @@ class PlayOnlineForm extends Component {
           return this.props.firebase.user(authUser.user.uid).set({displayName});
         })
         .then(() => {
-          this.setState({ ...INITIAL_STATE });
+          // this.setState({ ...INITIAL_STATE });
+          this.setState({ loading: false });
           this.props.onRegister(displayName);
-          // this.props.history.push(ROUTES.ONLINE);
         })
         .catch(error => {
-          this.setState({ error });
+          this.setState({ error, loading: false });
         });
-      // this.props.firebase
-      //   .doCreateUserWithEmailAndPassword(email, passwordOne)
-      //   .then(authUser => {
-      //     this.setState({ ...INITIAL_STATE });
-      //   })
-      //   .catch(error => {
-      //     this.setState({ error });
-      //   });
 
     }
 
@@ -73,7 +66,7 @@ class PlayOnlineForm extends Component {
           <h1>Spielername:</h1>
 
           <form onSubmit={this.onSubmit}>
-            <Input placeholder='Spielernamen' onChange={this.onChange}/>
+            <input placeholder='Spielernamen' onChange={this.onChange}/>
             <br/><br/>
             <Button disabled={nameInvalid}>Los</Button>
           </form>

@@ -23,7 +23,7 @@ class PlayOnline extends Component {
     }
 
     render() {
-      const playerName = this.state.nickname; //'SCH name ' + Math.floor(Math.random()*1000);
+      const playerName = this.state.nickname;
       return (
         <div>
           <AuthUserContext.Consumer>

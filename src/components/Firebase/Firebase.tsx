@@ -20,7 +20,7 @@ class Firebase {
   functions: app.functions.Functions;
 
   constructor() {
-    console.log(config, 'config');
+    // console.log(config, 'config');
     app.initializeApp(config);
 
     this.auth = app.auth();
@@ -30,29 +30,10 @@ class Firebase {
   }
 
 
-  // *** User API ***
-
-  // user = uid => this.db.ref(`users/${uid}`);
-
-  // users = () => this.db.ref('users');
-
-  // *** Auth API ***
-
-  // doCreateUserWithEmailAndPassword = (email, password) =>
-  //   this.auth.createUserWithEmailAndPassword(email, password);
-
-  // doSignInWithEmailAndPassword = (email, password) =>
-  //   this.auth.signInWithEmailAndPassword(email, password);
-
   doSignInWithAnonymousUser = () =>
     this.auth.signInAnonymously()
 
   doSignOut = () => this.auth.signOut();
-
-  // doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
-
-  // doPasswordUpdate = password =>
-  //   this.auth.currentUser.updatePassword(password);
 
   game = (id : string) : app.firestore.DocumentReference => {
     return this.firestore.doc(`games/${id}`);

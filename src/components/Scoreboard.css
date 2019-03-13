@@ -18,19 +18,47 @@
 .ui.table th {
   text-align: center;
   height: 45px;
+  color: #BD9A9C;
+}
+.ui.table thead th {
+  color: #BD9A9C;
+  padding-left: 0;
+  padding: 10px 0 10px 0 !important;
+  position: relative;
+}
+.ui.table thead th.active {
+  color: black;
 }
 
-.ui.table th.user-info {
-  width: 40px;
-  vertical-align: top;
+.ui.table th.active .active-user-sign {
+  position: absolute;
+  top: -10px;
+  width: 0;
+  height: 0;
+  margin-left: -10px;
+  border-style: solid;
+  border-width: 20px 20px 0 20px;
+  border-color: #000000 transparent transparent transparent;
 }
+
+
+
+/* .ui.table th.user-info {
+  width: 40px;
+  padding: 0;
+  padding-top: 10px;
+  vertical-align: middle;
+} */
+
 .ui.table .score {
   width: 140px;
   text-align: left;
   padding-left: 10px !important;
+  color: black;
 }
 .ui.table td.active {
-  background: rgba(0,0,0, 0.05);
+  background: transparent!important;
+  color: black;
 }
 .ui.table tr.total td,
 .ui.table tr.bonus td  {

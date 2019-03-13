@@ -40,7 +40,7 @@ class PlayOnlineForm extends Component {
     });
 
     setTimeout(() => {
-      this.setState({ rolling: false }, this.checkBot);
+      this.setState({ rolling: false });
     }, 1000);
   }
 
@@ -52,6 +52,7 @@ class PlayOnlineForm extends Component {
     const scoreFunc = Scores.find(s => s.name === scoreKey);
     const nextUser = (this.state.activeUser + 1) % users.length;
     const numbers = this.state.dices.map(d => d.nr);
+    const resolved = () => {};
 
     activeUser.scoreboard.scores[scoreKey] = scoreFunc.score(numbers);
 
@@ -59,7 +60,7 @@ class PlayOnlineForm extends Component {
     const lastUser = users[ users.length-1 ];
     if (!Object.values(lastUser.scoreboard.scores).some(s => s===null)) {
       this.setState({ finito: true });
-      return;
+      return new Promise(resolve => { resolve(); });
     }
 
     // next user & reset dices
@@ -68,14 +69,9 @@ class PlayOnlineForm extends Component {
       dices: getRandomDices(),
       remainThrows: 3,
       users
-    }, this.checkBot);
-  }
+    }, () => { resolved(); });
 
-  checkBot() {
-    const activeUser = this.props.users ? this.props.users[ this.state.activeUser ] : null;
-    if (activeUser && activeUser.isBot) {
-      this.rollDices();
-    }
+    return new Promise(resolved);
   }
 
 
