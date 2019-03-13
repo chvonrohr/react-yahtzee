@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import User from "../helpers/User";
-import { Button } from 'semantic-ui-react'
+import React, { Component } from "react"
+import User from "../helpers/User"
+import { Button } from "semantic-ui-react"
 
 const svgButton = (
   <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
@@ -49,6 +49,8 @@ class PlayOfflineForm extends Component {
 
   render() {
     const users = this.state.users.slice(0);
+    const isInvalid = users.some(u => u.name === '');
+
     return (
       <div>
         {users.map((user, nr) => (
@@ -77,7 +79,7 @@ class PlayOfflineForm extends Component {
           <span>{svgButton}</span>
           zusätzlicher Spieler
         </Button>
-        <Button onClick={() => this.props.onSubmit(this.state.users)}>
+        <Button disabled={isInvalid} onClick={() => this.props.onSubmit(this.state.users)}>
           Start
         </Button>
       </div>

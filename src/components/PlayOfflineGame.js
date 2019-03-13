@@ -19,6 +19,10 @@ class PlayOnlineForm extends Component {
     }
   }
 
+  // componentDidMount() {
+  //   this.checkBot();
+  // }
+
   toggleDiceLock(id) {
     if (this.state.rolling) return;
     const dices = this.state.dices.slice(0);
@@ -36,7 +40,7 @@ class PlayOnlineForm extends Component {
     });
 
     setTimeout(() => {
-      this.setState({ rolling: false });
+      this.setState({ rolling: false }, this.checkBot);
     }, 1000);
   }
 
@@ -64,7 +68,14 @@ class PlayOnlineForm extends Component {
       dices: getRandomDices(),
       remainThrows: 3,
       users
-    }/*, this.rollDices*/);
+    }, this.checkBot);
+  }
+
+  checkBot() {
+    const activeUser = this.props.users ? this.props.users[ this.state.activeUser ] : null;
+    if (activeUser && activeUser.isBot) {
+      this.rollDices();
+    }
   }
 
 

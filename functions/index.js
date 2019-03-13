@@ -11,14 +11,8 @@
  * @docs Callable functions https://firebase.google.com/docs/functions/callable?authuser=0
  */
 
-const functions = require('firebase-functions');
 const Scores = require('./scores');
-console.log(Scores, 'Scores class');
-
-// const cors = require('cors')({origin: true});
-// const database = require('firebase/database');
-// const firebase = require('firebase/app'); // ?
-
+const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase); // ??
 
@@ -39,7 +33,6 @@ function getRandom(arr) {
 }
 
 const createGame = (userId, playerName) => {
-  // const await user = admin.firestore.collection('users').doc(userId).get();
   const users = [createPlayer(userId, playerName, {/* TODO AVATAR */})]
   const game = {
     state: 'starting', //'starting', 'playing', 'end'
@@ -50,7 +43,7 @@ const createGame = (userId, playerName) => {
     dices: null,
     remainingThrows: 3,
   };
-  console.log(game, 'created game');
+
   return admin.firestore().collection('games').add(game).then(game => game.get());
 }
 
@@ -59,9 +52,9 @@ const createPlayer = (userId, playerName /*, avatar*/) => {
   return {
     user: userId,
     name: playerName,
-    avatar: {
-      hair: getRandom(['NoHair','Eyepatch','Hat','Hijab','Turban','LongHairBigHair','LongHairBob','LongHairBun','LongHairCurly','LongHairCurvy','LongHairFrida','ShortHairDreads01','ShortHairFrizzle'])
-    },
+    // avatar: {
+    //   hair: getRandom(['NoHair','Eyepatch','Hat','Hijab','Turban','LongHairBigHair','LongHairBob','LongHairBun','LongHairCurly','LongHairCurvy','LongHairFrida','ShortHairDreads01','ShortHairFrizzle'])
+    // },
     scores: {
       ones: null,
       twos: null,
@@ -120,14 +113,12 @@ exports.joinGame = functions.https.onCall((data, context) => { //https://firebas
 
       if (!snap.empty) {
         const foundGame = snapToArray(snap)[0];
-        console.log(foundGame, 'found game');
         return new Promise(resolve => { resolve(foundGame); });
       }
 
       return createGame(userId, playerName);
     })
     .then(game => { // 2. create player from data and add to game
-      console.log(game, 'game 2.'); // = QueryDocumentSnapshot -> data/get(xy)
 
       const players = game.get('players') || [];
       const playerExists = players.some(p => p.user === userId);
@@ -136,18 +127,15 @@ exports.joinGame = functions.https.onCall((data, context) => { //https://firebas
         players.push( createPlayer(userId, playerName, {/* TODO AVATAR */}) );
       }
 
-      console.log(players, 'players');
       finalGame = game;
 
       return  admin.firestore().doc('games/' + game.id).update({ players });
     })
     .then(writeRes => { // 3. send game
-
-      console.log(finalGame, 'final game');
       return { gameId: finalGame.id };
     })
     .catch(error => {
-      console.log("Error getting documents: ", error);
+      return {status: 'error', code: 500, message: 'No game found'};
     });
 });
 
@@ -205,8 +193,7 @@ exports.rollDices = functions.https.onCall((data, context) => { //https://fireba
     return admin.firestore().doc('games/' + data.gameId).update(update);
   })
   .catch(e => {
-    console.log(e, 'error in roll dices');
-    return {status: 'error', code: 500, message: 'error during dice roll'};
+    return { status: 'error', code: 500, message: 'error during dice roll' };
   });
 
 });
@@ -250,68 +237,18 @@ exports.setPoints = functions.https.onCall((data, context) => { //https://fireba
     updateData.players[gameData.activePlayer].scores[scoreKey] = diceScore; // set score
     updateData.activePlayer = (gameData.activePlayer + 1) % gameData.players.length; // next player
     updateData.remainingThrows = 3;
-    updateData.dices = [];
-    console.log(updateData, 'updateData');
+    updateData.dices = null;
+
+    // check game finished (all set on last user)
+    // const lastPlayer = updateData.players[ updateData.players.length - 1 ];
+    // const isFinished = !Object.values(lastPlayer.scores).some(v => v === null);
+
 
     return admin.firestore().doc(`games/${data.gameId}`).update(updateData);
   })
   .catch(e => {
-    console.log(e, 'error in roll dices');
+    return { status: 'error', code: 500, message: 'error when setting points' };
   });
 
 });
 
-
-
-// * *  example: when a new xx is created  * *
-//grab collection
-// const createNotification = (notification => {
-//   const database = admin.firestore.database();
-//   return admin.firestore().collection('notifications')
-//     .add(notification)
-//     .then(doc => console.log('notification added ', doc))
-// })
-// // function
-// exports.userCreated = functions.firestore
-//  .document('user/{userId}')
-//  .onCreate(doc => {
-//     const user = doc.data();
-//     const notification = {
-//       content: 'Added a new project',
-//       for: `${project.author} and so on`,
-//       time: admin.firestore.FieldValue.serverTimestamp(),
-//       // user: admin.firestore.FieldValue.
-//       user:
-//     admin
-//    }
-//    return createNotification(notification);
-//  })
-
-// Create and Deploy Your First Cloud Functions
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello chris!");
-// });
-
-
- // * * WHEN onRequest (instead of onCall): * *
-  // if (!uid) throw new functions.https.HttpsError('unauthenticated');
-  // const user = admin.auth().getUser();
-  // res.send(user);
-  // return;
-
-  // CORS
-  // res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
-  // res.set('Access-Control-Allow-Credentials', 'true');
-
-  // if (req.method === 'OPTIONS') {
-  //   // Send response to OPTIONS requests
-  //   res.set('Access-Control-Allow-Methods', 'GET');
-  //   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  //   res.set('Access-Control-Max-Age', '3600');
-  //   res.status(204).send('');
-  // }
-
-  // res.set('Access-Control-Allow-Origin', '*');
-  // res.set('Access-Control-Allow-Methods', 'GET, POST')
-  // res.send({ data: game });
-  // res.status(200).send({ data: game });

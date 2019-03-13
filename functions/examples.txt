@@ -1,0 +1,54 @@
+
+
+// * *  example: when a new xx is created  * *
+//grab collection
+// const createNotification = (notification => {
+//   const database = admin.firestore.database();
+//   return admin.firestore().collection('notifications')
+//     .add(notification)
+//     .then(doc => console.log('notification added ', doc))
+// })
+// // function
+// exports.userCreated = functions.firestore
+//  .document('user/{userId}')
+//  .onCreate(doc => {
+//     const user = doc.data();
+//     const notification = {
+//       content: 'Added a new project',
+//       for: `${project.author} and so on`,
+//       time: admin.firestore.FieldValue.serverTimestamp(),
+//       // user: admin.firestore.FieldValue.
+//       user:
+//     admin
+//    }
+//    return createNotification(notification);
+//  })
+
+// Create and Deploy Your First Cloud Functions
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//  response.send("Hello chris!");
+// });
+
+
+ // * * WHEN onRequest (instead of onCall): * *
+  // if (!uid) throw new functions.https.HttpsError('unauthenticated');
+  // const user = admin.auth().getUser();
+  // res.send(user);
+  // return;
+
+  // CORS
+  // res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // res.set('Access-Control-Allow-Credentials', 'true');
+
+  // if (req.method === 'OPTIONS') {
+  //   // Send response to OPTIONS requests
+  //   res.set('Access-Control-Allow-Methods', 'GET');
+  //   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  //   res.set('Access-Control-Max-Age', '3600');
+  //   res.status(204).send('');
+  // }
+
+  // res.set('Access-Control-Allow-Origin', '*');
+  // res.set('Access-Control-Allow-Methods', 'GET, POST')
+  // res.send({ data: game });
+  // res.status(200).send({ data: game });
