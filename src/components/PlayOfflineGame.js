@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import Game from './Game'
-// import User from '../helpers/User'
-// import { IDice } from '../interfaces'
 import Scores from '../helpers/Scores'
 import { getRandomDices } from '../helpers/DicesHelper'
+import { DICE_ANIMATION } from '../constants/timing'
 
 class PlayOnlineForm extends Component {
 
@@ -18,10 +17,6 @@ class PlayOnlineForm extends Component {
       remainThrows: 3
     }
   }
-
-  // componentDidMount() {
-  //   this.checkBot();
-  // }
 
   toggleDiceLock(id) {
     if (this.state.rolling) return;
@@ -41,7 +36,7 @@ class PlayOnlineForm extends Component {
 
     setTimeout(() => {
       this.setState({ rolling: false });
-    }, 1000);
+    }, DICE_ANIMATION);
   }
 
   setPoints(scoreKey) {
@@ -55,13 +50,6 @@ class PlayOnlineForm extends Component {
     const resolved = () => {};
 
     activeUser.scoreboard.scores[scoreKey] = scoreFunc.score(numbers);
-
-    // check finished
-    const lastUser = users[ users.length-1 ];
-    if (!Object.values(lastUser.scoreboard.scores).some(s => s===null)) {
-      this.setState({ finito: true });
-      return new Promise(resolve => { resolve(); });
-    }
 
     // next user & reset dices
     this.setState({

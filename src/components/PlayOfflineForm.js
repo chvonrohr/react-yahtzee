@@ -82,12 +82,13 @@ class PlayOfflineForm extends Component {
               autoComplete="off"
             />
             <label>
+              <br/>
               <input
                 type="checkbox"
                 value={user.isBot}
                 name={nr}
                 onChange={this.handleUserInput}
-              /> {" "} Bot
+              /> &nbsp; Computer-Spieler
             </label>
           </div>
         ))}

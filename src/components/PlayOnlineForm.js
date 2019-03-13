@@ -64,9 +64,8 @@ class PlayOnlineForm extends Component {
       return (
         <div>
           <h1>Spielername:</h1>
-
           <form onSubmit={this.onSubmit}>
-            <input placeholder='Spielernamen' onChange={this.onChange}/>
+            <input type="text" placeholder='Spielernamen' onChange={this.onChange}/>
             <br/><br/>
             <Button disabled={nameInvalid}>Los</Button>
           </form>

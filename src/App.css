@@ -130,6 +130,12 @@ ul.player-list {
   margin: 0 auto;
 }
 
+ol.player-ranks {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
 /* DICE */
 .message-area {
   min-height: 100px;
@@ -163,6 +169,6 @@ ul.player-list {
 
 @media screen and (min-width: 992px) {
   .dices {
-    max-width: 900px;
+    /* max-width: 900px; */
   }
 }

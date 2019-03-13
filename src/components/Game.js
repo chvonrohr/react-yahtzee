@@ -1,18 +1,22 @@
-import React, { Component } from "react";
-import Scoreboard from "./Scoreboard";
-import DicesPanel from "./DicesPanel";
+import React, { Component } from "react"
+import Scoreboard from "./Scoreboard"
+import Scores from "../helpers/Scores"
+import DicesPanel from "./DicesPanel"
+import GameFinished from "./GameFinished"
 import { Button } from 'semantic-ui-react'
+
+import { DICE_ANIMATION, BOT_DECISION } from '../constants/timing'
 
 class Game extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      finito: false
+      isFinished: false,
+      lastScoreUser: null,
+      lastScoreTitle: null
     };
 
-    this.ANIMATION_DURATION = 1500; //1500;
-    this.BOT_WAIT_DURATION = 2000; //1000;
   }
 
   componentDidMount() {
@@ -33,28 +37,47 @@ class Game extends Component {
 
     setTimeout(() => {
       this.botDecision();
-    }, this.ANIMATION_DURATION+50);
+    }, DICE_ANIMATION);
   }
 
   toggleDiceLock(diceNr) {
     this.props.toggleDiceLock(diceNr);
   }
   setPoints(scoreKey) {
+
+    // remember what was set by who
+    const scoreFunc = Scores.find(s => s.name===scoreKey);
+    this.setState({
+      lastScoreTitle: scoreFunc ? scoreFunc.title : null,
+      lastScoreUser: this.props.users[ this.props.activeUser ].name
+    });
+
+
     this.props.setPoints(scoreKey);
+
     setTimeout(() => {
+
+      // check finished
+      const users = this.props.users;
+      const lastUser = users[ users.length-1 ];
+      if (!Object.values(lastUser.scoreboard.scores).some(s => s===null)) {
+        this.setState({ isFinished: true });
+        return;
+      }
+
       this.botDecision();
-    }, this.ANIMATION_DURATION);
+    }, DICE_ANIMATION);
   }
 
   // automatic bot decision if user is bot
   botDecision() {
+
     // check waiting mode
-    console.log('check bot rolling');
     if (this.props.rolling) return;
+    if (this.state.isFinished) return;
 
     // check active user is bot
     const activeUser = this.props.users[ this.props.activeUser ];
-    console.log(activeUser, 'check bot user');
     if (!activeUser.isBot) return;
 
     let decision = activeUser.getBotDecision(this.props.remainThrows, this.props.dices);
@@ -81,7 +104,7 @@ class Game extends Component {
         default:
           break;
       }
-    }, this.BOT_WAIT_DURATION);
+    }, BOT_DECISION);
   }
 
   render() {
@@ -93,6 +116,7 @@ class Game extends Component {
     const activeUser = users[this.props.activeUser];
     const isInteraction = this.props.isInteraction && !activeUser.isBot;
     const msg = (isOnline && isInteraction ? 'Du bist' : activeUser.name+" ist") + " an der Reihe";
+    const lastSetMessage = this.state.lastScoreUser ? this.state.lastScoreUser + " hat auf " + this.state.lastScoreTitle + " gesetzt" : '';
 
     // wait screen
     const isPlayerStart = (remainThrows === 3);
@@ -101,46 +125,56 @@ class Game extends Component {
     return (
       <div className="game">
 
-        {isPlayerStart ? (
-
-          <div>
-            <h1>{msg}</h1>
-            {isInteraction ? (
-              <Button onClick={() => this.rollDices()}>
-                würfeln
-              </Button>
-            ) : ''}
-          </div>
-
+        {/* IS FINISHED */}
+        {this.state.isFinished ? (
+          <GameFinished users={this.props.users} />
         ) : (
 
           <div>
-            <DicesPanel
-              dices={dices}
-              rolling={this.props.rolling}
-              isInteraction={isInteraction}
-              message={msg}
-              remainThrows={remainThrows}
-              rollDices={() => this.rollDices() }
-              toggleDice={(diceNr) => this.props.toggleDiceLock(diceNr)}
-            />
+            {/* IS STARTING */}
+            {isPlayerStart ? (
+              <div>
+                {lastSetMessage ? (
+                  <h3>{lastSetMessage}</h3>
+                ) : ''}
+                <h1>{msg}</h1>
+                {isInteraction ? (
+                  <Button onClick={() => this.rollDices()}>
+                    würfeln
+                  </Button>
+                ) : ''}
+              </div>
 
-            <div className="scoreboard">
-              <Scoreboard
-                activeUser={this.props.activeUser}
-                users={users}
-                dices={dices}
-                rolling={this.props.rolling}
-                isInteraction={isInteraction}
-                setPoints={scoreKey => this.setPoints(scoreKey)}
-              />
-            </div>
+            ) : (
+
+              <div>
+
+                {/* GAME */}
+                <DicesPanel
+                  dices={dices}
+                  rolling={this.props.rolling}
+                  isInteraction={isInteraction}
+                  message=""
+                  remainThrows={remainThrows}
+                  rollDices={() => this.rollDices() }
+                  toggleDice={(diceNr) => this.props.toggleDiceLock(diceNr)}
+                />
+
+                <div className="scoreboard">
+                  <Scoreboard
+                    activeUser={this.props.activeUser}
+                    users={users}
+                    dices={dices}
+                    rolling={this.props.rolling}
+                    isInteraction={isInteraction}
+                    setPoints={scoreKey => this.setPoints(scoreKey)}
+                  />
+                </div>
+              </div>
+
+            )}
           </div>
-
         )}
-
-
-
       </div>
     );
   }
