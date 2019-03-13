@@ -9,12 +9,12 @@ const shake = keyframes`
 `
 
 const DiceButton = styled.button`
-  display: inline-block;
-  margin-right: 10px;
-  border: none;
-  background: none;
-  outline: none;
-  cursor: pointer;
+  // display: inline-block;
+  // margin-right: 10px;
+  // border: none;
+  // background: none;
+  // outline: none;
+  // cursor: pointer;
 
   animation-name: ${props => (props.rolling && !props.isLocked) ? shake : 'none'};
   animation-duration: 500ms;
@@ -39,6 +39,7 @@ class Dice extends Component {
     render() {
         return (
           <DiceButton
+            className="dice"
             isLocked={this.props.isLocked}
             onClick={this.props.onClick}
             rolling={this.props.rolling}

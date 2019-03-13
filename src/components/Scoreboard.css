@@ -8,7 +8,7 @@
 }
 
 .ui.table td {
-  border-top: 1px solid black ; 
+  border-top: 1px solid black ;
   /* padding-top: 3px;
   padding-bottom: 3px; */
   padding: 3px;
@@ -32,7 +32,8 @@
 .ui.table td.active {
   background: rgba(0,0,0, 0.05);
 }
-.ui.table td.total {
+.ui.table tr.total td,
+.ui.table tr.bonus td  {
   font-weight: 700;
   border-bottom: 2px solid black;
 }

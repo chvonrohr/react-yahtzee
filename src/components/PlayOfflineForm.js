@@ -4,8 +4,8 @@ import { Button } from "semantic-ui-react"
 
 const svgButton = (
   <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
-  <g stroke="#BD9A9C" stroke-width="2" fill="none" fill-rule="evenodd">
-    <g stroke-linecap="square">
+  <g stroke="#BD9A9C" strokeWidth="2" fill="none" fillRule="evenodd">
+    <g strokeLinecap="square">
       <path d="M11.33333 20h17.33334M20 12v17"/>
     </g>
     <circle cx="20" cy="20" r="19"/>

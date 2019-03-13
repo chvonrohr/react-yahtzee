@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react';
 
 
 const Panel = styled.div`
-  height: 100px;
+  // height: 150px;
 `;
 
 const Dices = styled.div`
@@ -43,7 +43,7 @@ class DicesPanel extends Component {
     return (
       <Panel>
 
-        <Dices>
+        <Dices className="dices">
           {dices.map(dice => (
             <Dice
               key={dice.id}
